@@ -57,11 +57,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PIM.Core\PIM.Core.csproj">
+    <ProjectReference Include="..\PIM.Core\PIM.Core.csproj">
       <Project>{03e77f01-bd2c-466f-a05c-46f67d3e0278}</Project>
       <Name>PIM.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PIM.DataAccess\PIM.Infrastructure.csproj">
+    <ProjectReference Include="..\PIM.Infrastrusture\PIM.Infrastructure.csproj">
       <Project>{51571df8-631e-4577-bb96-1fec0900cb65}</Project>
       <Name>PIM.Infrastructure</Name>
     </ProjectReference>

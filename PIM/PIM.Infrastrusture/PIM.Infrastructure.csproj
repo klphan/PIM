@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62C5DD78-9F94-41ED-9355-04D72EFBDF97}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>PIM.Test</RootNamespace>
-    <AssemblyName>PIM.Test</AssemblyName>
+    <ProjectGuid>{51571DF8-631E-4577-BB96-1FEC0900CB65}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PIM.DataAccess</RootNamespace>
+    <AssemblyName>PIM.DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,12 +37,6 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\PIM\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\PIM\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\PIM\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -56,20 +48,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="EntityConfiguration\EmployeeConfiguration.cs" />
+    <Compile Include="EntityConfiguration\GroupConfiguration.cs" />
+    <Compile Include="EntityConfiguration\ProjectConfiguration.cs" />
+    <Compile Include="EntityConfiguration\ProjectEmployeeConfiguration.cs" />
+    <Compile Include="Migrations\201909240730553_InitialModel.cs" />
+    <Compile Include="Migrations\201909240730553_InitialModel.Designer.cs">
+      <DependentUpon>201909240730553_InitialModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909240820513_InitialModel1.cs" />
+    <Compile Include="Migrations\201909240820513_InitialModel1.Designer.cs">
+      <DependentUpon>201909240820513_InitialModel1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909240822495_InitialModel2.cs" />
+    <Compile Include="Migrations\201909240822495_InitialModel2.Designer.cs">
+      <DependentUpon>201909240822495_InitialModel2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909240837078_InitialModel4.cs" />
+    <Compile Include="Migrations\201909240837078_InitialModel4.Designer.cs">
+      <DependentUpon>201909240837078_InitialModel4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="PIMInitializeDB.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="PIMContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ProjectService.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201909240730553_InitialModel.resx">
+      <DependentUpon>201909240730553_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909240820513_InitialModel1.resx">
+      <DependentUpon>201909240820513_InitialModel1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909240822495_InitialModel2.resx">
+      <DependentUpon>201909240822495_InitialModel2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909240837078_InitialModel4.resx">
+      <DependentUpon>201909240837078_InitialModel4.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PIM.Core\PIM.Core.csproj">
       <Project>{03e77f01-bd2c-466f-a05c-46f67d3e0278}</Project>
       <Name>PIM.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PIM.DataAccess\PIM.Infrastructure.csproj">
-      <Project>{51571df8-631e-4577-bb96-1fec0900cb65}</Project>
-      <Name>PIM.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,17 +14,49 @@ namespace PIM.Infrastructure
         protected override void Seed(PIMContext context)
         {
             AddProjects(context);
-            base.Seed(context);
 
-            Employee emp1 = new Employee
+            Employee emp1, emp2, emp3;
+            AddEmployees(context, out emp1, out emp2, out emp3);
+            AddGroups(context, emp1, emp2, emp3);
+            base.Seed(context);
+        }
+
+        private static void AddGroups(PIMContext context, Employee emp1, Employee emp2, Employee emp3)
+        {
+            var groups = new List<Group>
+                {
+                    new Group
+                    {
+                        GroupLeader = emp1
+                    },
+                    new Group
+                    {
+                        GroupLeader = emp2
+                    },
+                    new Group
+                    {
+                        GroupLeader = emp3
+                    },
+                };
+            foreach (var group in groups)
+            {
+                context.Groups.Add(group);
+            }
+
+
+            context.SaveChanges();
+        }
+
+        private static void AddEmployees(PIMContext context, out Employee emp1, out Employee emp2, out Employee emp3)
+        {
+            emp1 = new Employee
             {
                 Visa = "aa1",
                 FirstName = "FirstName1",
                 LastName = "LastName1",
                 BirthDay = new DateTime(2000, 01, 01)
             };
-
-            Employee emp2 = new Employee
+            emp2 = new Employee
             {
 
                 Visa = "aa2",
@@ -34,7 +66,7 @@ namespace PIM.Infrastructure
 
 
             };
-            Employee emp3 = new Employee
+            emp3 = new Employee
             {
                 Visa = "aa3",
                 FirstName = "FirstName3",
@@ -55,35 +87,11 @@ namespace PIM.Infrastructure
                 LastName = "LastName5",
                 BirthDay = new DateTime(1999, 01, 01)
             };
-            unitOfWork.Employee.Add(emp1);
-            unitOfWork.Employee.Add(emp2);
-            unitOfWork.Employee.Add(emp3);
-            unitOfWork.Employee.Add(emp4);
-            unitOfWork.Employee.Add(emp5);
-
-            var groups = new List<Group>
-                {
-                    new Group
-                    {
-                        GroupLeader = emp1
-                    },
-                    new Group
-                    {
-                        GroupLeader = emp2
-                    },
-                    new Group
-                    {
-                        GroupLeader = emp3
-                    },
-                };
-            foreach (var group in groups)
-            {
-                unitOfWork.Group.Add(group);
-            }
-
-
-            context.SaveChanges();
-            base.Seed(context);
+            context.Employees.Add(emp1);
+            context.Employees.Add(emp2);
+            context.Employees.Add(emp3);
+            context.Employees.Add(emp4);
+            context.Employees.Add(emp5);
         }
 
         private static void AddProjects(PIMContext context)
