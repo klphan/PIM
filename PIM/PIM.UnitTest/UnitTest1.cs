@@ -16,7 +16,7 @@ namespace PIM.UnitTest
 
             Project validProject = new Project
             {
-                Group_ID = Guid.Parse("3676046c-383c-4b9c-b53a-cc148c3c3e82"),
+                GroupId = Guid.Parse("9C3F7E17-8849-4088-8F55-2D9E02435DE8"),
                 ProjectNumber = 1112,
                 Name = "projectname1",
                 Customer = "customer1",
@@ -27,7 +27,7 @@ namespace PIM.UnitTest
 
             Project invalidProject = new Project
             {
-                Group_ID = Guid.Parse("1B8616BC-E30B-4FF8-BA98-CDE8A01D1E01"),
+                GroupId = Guid.Parse("1B8616BC-E30B-4FF8-BA98-CDE8A01D1E01"),
                 ProjectNumber = 1112,
                 Name = "projectname1",
                 Customer = "customer1",

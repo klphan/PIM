@@ -28,12 +28,13 @@ namespace PIM.Infrastructure.EntityConfiguration
             //Indepedent Association so use the Map method
 
             HasRequired(p => p.Group)
-                .WithOptional(g => g.Project)
-                .Map(p => p.MapKey("Group_ID"));
+
             // HasForeignKey only works with WithMany() relationship
-            //.WithMany(g => g.Projects) 
-            //.HasForeignKey(g => g.GroupId)
+            .WithMany(g => g.Projects)
+            .HasForeignKey(g => g.GroupId);
             //.WillCascadeOnDelete(false);
+            // .WithOptional(g => g.Project)
+            // .Map(p => p.MapKey("GroupId"));
 
             Property(p => p.Customer)
                 .IsRequired()

@@ -13,40 +13,65 @@ namespace PIM.Infrastructure
     {
         protected override void Seed(PIMContext context)
         {
-            AddProjects(context);
 
             Employee emp1, emp2, emp3;
+
             AddEmployees(context, out emp1, out emp2, out emp3);
-            AddGroups(context, emp1, emp2, emp3);
+
+            Group group1, group2, group3;
+            AddGroups(context, emp1, emp2, emp3, out group1, out group2, out group3);
+
+            AddProjects(context, group1, group2, group3);
+            context.SaveChanges();
             base.Seed(context);
         }
 
-        private static void AddGroups(PIMContext context, Employee emp1, Employee emp2, Employee emp3)
+        private static void AddProjects(PIMContext context, Group group1, Group group2, Group group3)
         {
-            var groups = new List<Group>
-                {
-                    new Group
-                    {
-                        GroupLeader = emp1
-                    },
-                    new Group
-                    {
-                        GroupLeader = emp2
-                    },
-                    new Group
-                    {
-                        GroupLeader = emp3
-                    },
-                };
-            foreach (var group in groups)
+            Project project1 = new Project
             {
-                context.Groups.Add(group);
-            }
+                GroupId = group1.ID,
+                ProjectNumber = 1111,
+                Name = "name1",
+                Customer = "c1",
+                Status = Status.New,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2017, 7, 15)
+            };
+            Project project2 = new Project
+            {
+                GroupId = group2.ID,
+                ProjectNumber = 1112,
+                Name = "name2",
+                Customer = "c2",
+                Status = Status.Planned,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2017, 7, 15)
+            };
+            Project project3 = new Project
+            {
+                GroupId = group3.ID,
+                ProjectNumber = 1113,
+                Name = "name3",
+                Customer = "c3",
+                Status = Status.Finished,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2017, 7, 15)
 
-
+            };
+            context.Projects.AddRange(new List<Project> { project1, project2, project3 });
             context.SaveChanges();
         }
-
+        private static void AddGroups(PIMContext context, Employee emp1, Employee emp2, Employee emp3, out Group group1, out Group group2, out Group group3)
+        {
+            group1 = new Group { GroupLeader = emp1 };
+            group2 = new Group { GroupLeader = emp2 };
+            group3 = new Group { GroupLeader = emp3 };
+            context.Groups.Add(group1);
+            context.Groups.Add(group2);
+            context.Groups.Add(group3);
+            context.SaveChanges();
+        }
         private static void AddEmployees(PIMContext context, out Employee emp1, out Employee emp2, out Employee emp3)
         {
             emp1 = new Employee
@@ -92,47 +117,6 @@ namespace PIM.Infrastructure
             context.Employees.Add(emp3);
             context.Employees.Add(emp4);
             context.Employees.Add(emp5);
-        }
-
-        private static void AddProjects(PIMContext context)
-        {
-            context.Projects.Add(
-            new Project
-            {
-                Group_ID = Guid.NewGuid(),
-                ProjectNumber = 1111,
-                Name = "name1",
-                Customer = "c1",
-                Status = Status.New,
-                StartDate = new DateTime(2016, 7, 15),
-                EndDate = new DateTime(2017, 7, 15)
-
-            });
-            context.Projects.Add(
-            new Project
-            {
-                Group_ID = Guid.NewGuid(),
-                ProjectNumber = 1112,
-                Name = "name2",
-                Customer = "c2",
-                Status = Status.Planned,
-                StartDate = new DateTime(2016, 7, 15),
-                EndDate = new DateTime(2017, 7, 15)
-
-            });
-            context.Projects.Add(
-            new Project
-            {
-                Group_ID = Guid.NewGuid(),
-                ProjectNumber = 1113,
-                Name = "name3",
-                Customer = "c3",
-                Status = Status.Finished,
-                StartDate = new DateTime(2016, 7, 15),
-                EndDate = new DateTime(2017, 7, 15)
-
-            }
-        );
             context.SaveChanges();
         }
     }

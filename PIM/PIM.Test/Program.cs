@@ -7,6 +7,7 @@ using PIM.Core;
 using PIM.Infrastructure;
 using PIM.Infrastructure.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.Entity;
 
 namespace PIM.Test
 {
@@ -15,30 +16,23 @@ namespace PIM.Test
 
         static void Main(string[] args)
         {
-            //create a new database with seed data
-            //using (var ctx = new PIMContext())
-            //{
+            //set the context and reference data
+            CreateNewContext();      
 
-            //    PIMInitializeDB db = new PIMInitializeDB();
-            //    System.Data.Entity.Database.SetInitializer(db);
+            //ProjectService createProjectService;
+            //Project validProject, invalidProject;
+            //AddNewProjects(out createProjectService, out validProject, out invalidProject);
 
-            //    ctx.SaveChanges();
-            //}
+            //createProjectService.Create(validProject, new List<string> { "aa1", "aa2", "aa3" });
+            //createProjectService.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" });
+        }
 
-            //using (var unitOfWork = new UnitOfWork(new PIMContext()))
-            //{
-            //    // Example1
-
-
-           
-            //    unitOfWork.Commit();
-
-            //}
-            ProjectService createProjectService = new ProjectService();
-
-            Project validProject = new Project
+        private static void AddNewProjects(out ProjectService createProjectService, out Project validProject, out Project invalidProject)
+        {
+            createProjectService = new ProjectService();
+            validProject = new Project
             {
-                Group_ID = Guid.Parse("3676046c-383c-4b9c-b53a-cc148c3c3e82"),
+                GroupId = Guid.Parse("9C3F7E17-8849-4088-8F55-2D9E02435DE8"),
                 ProjectNumber = 1112,
                 Name = "projectname1",
                 Customer = "customer1",
@@ -46,10 +40,9 @@ namespace PIM.Test
                 StartDate = new DateTime(2016, 7, 15),
                 EndDate = new DateTime(2017, 7, 15)
             };
-
-            Project invalidProject = new Project
+            invalidProject = new Project
             {
-                Group_ID = Guid.Parse("1B8616BC-E30B-4FF8-BA98-CDE8A01D1E01"),
+                GroupId = Guid.Parse("1B8616BC-E30B-4FF8-BA98-CDE8A01D1E01"),
                 ProjectNumber = 1112,
                 Name = "projectname1",
                 Customer = "customer1",
@@ -57,9 +50,15 @@ namespace PIM.Test
                 StartDate = new DateTime(2016, 7, 15),
                 EndDate = new DateTime(2017, 7, 15)
             };
+        }
 
-            createProjectService.Create(validProject, new List<string> { "aa1", "aa2", "aa3" });
-            createProjectService.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" });
+        private static void CreateNewContext()
+        {
+            PIMContext context = new PIMContext();
+            PIMInitializeDB db = new PIMInitializeDB();
+            Database.SetInitializer(db);
+            var result = context.Groups.ToList();
+            context.Dispose();
         }
     }
 }

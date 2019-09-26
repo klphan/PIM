@@ -16,11 +16,11 @@ namespace PIM.Infrastructure.EntityConfiguration
 
             HasRequired(pe => pe.Project)
                  .WithOptional(p => p.ProjectEmployee)
-                 .Map(pe => pe.MapKey("Project_ID"));
+                 .Map(pe => pe.MapKey("ProjectId"));
 
             HasRequired(pe => pe.Employee)
                 .WithOptional(e => e.ProjectEmployee)
-                .Map(pe => pe.MapKey("Employee_ID"));
+                .Map(pe => pe.MapKey("EmployeeId"));
         }
     }
 }

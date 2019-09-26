@@ -9,11 +9,11 @@ namespace PIM.Infrastructure
         public PIMContext()
             : base("name=PIMContextConnectionString")
         {
-           // Database.SetInitializer<PIMContext>(new PIMInitializeDB());
+           Database.SetInitializer<PIMContext>(new PIMInitializeDB());
            
         }
         public DbSet<Project> Projects { get; set; }
-        //public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
+        public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Group> Groups { get; set; }
 

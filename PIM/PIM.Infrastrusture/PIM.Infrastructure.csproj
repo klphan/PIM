@@ -52,23 +52,6 @@
     <Compile Include="EntityConfiguration\GroupConfiguration.cs" />
     <Compile Include="EntityConfiguration\ProjectConfiguration.cs" />
     <Compile Include="EntityConfiguration\ProjectEmployeeConfiguration.cs" />
-    <Compile Include="Migrations\201909240730553_InitialModel.cs" />
-    <Compile Include="Migrations\201909240730553_InitialModel.Designer.cs">
-      <DependentUpon>201909240730553_InitialModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240820513_InitialModel1.cs" />
-    <Compile Include="Migrations\201909240820513_InitialModel1.Designer.cs">
-      <DependentUpon>201909240820513_InitialModel1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240822495_InitialModel2.cs" />
-    <Compile Include="Migrations\201909240822495_InitialModel2.Designer.cs">
-      <DependentUpon>201909240822495_InitialModel2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909240837078_InitialModel4.cs" />
-    <Compile Include="Migrations\201909240837078_InitialModel4.Designer.cs">
-      <DependentUpon>201909240837078_InitialModel4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PIMInitializeDB.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="PIMContext.cs" />
@@ -78,20 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909240730553_InitialModel.resx">
-      <DependentUpon>201909240730553_InitialModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240820513_InitialModel1.resx">
-      <DependentUpon>201909240820513_InitialModel1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240822495_InitialModel2.resx">
-      <DependentUpon>201909240822495_InitialModel2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909240837078_InitialModel4.resx">
-      <DependentUpon>201909240837078_InitialModel4.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PIM.Core\PIM.Core.csproj">

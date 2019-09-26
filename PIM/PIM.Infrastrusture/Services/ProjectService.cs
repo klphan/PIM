@@ -95,7 +95,7 @@ namespace PIM.Infrastructure.Services
                 Project selected = unitOfWork.Project.FindById(a.ID);
                 //Update record for the Project table
                 selected.Customer = a.Customer;
-                selected.Group_ID = a.Group_ID;
+                selected.GroupId = a.GroupId;
                 selected.EndDate = a.EndDate;
                 selected.StartDate = a.StartDate;
                 selected.Status = a.Status;

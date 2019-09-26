@@ -18,7 +18,7 @@ namespace PIM.Infrastructure.EntityConfiguration
 
             HasRequired(g => g.GroupLeader)
                 .WithOptional(e => e.IsGroupLeader)
-                .Map(a => a.MapKey("GroupLeader_ID"));
+                .Map(a => a.MapKey("GroupLeaderId"));
 
                 //.HasForeignKey(g => g.GroupLeaderId); 
             

@@ -65,6 +65,10 @@
       <Project>{51571df8-631e-4577-bb96-1fec0900cb65}</Project>
       <Name>PIM.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PIM.Test\PIM.Test.csproj">
+      <Project>{62c5dd78-9f94-41ed-9355-04d72efbdf97}</Project>
+      <Name>PIM.Test</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
