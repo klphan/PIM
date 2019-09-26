@@ -105,7 +105,7 @@ namespace PIM.Infrastructure.Services
 
                 // return a list of projectEmployees in ProjectEmployee table that has the matching project number
                 var exProjectEmployees = unitOfWork.ProjectEmployee.Get()
-                    .Where(pe => pe.Project == selected)
+                    .Where(pe => pe.ProjectId == selected.ID)
                     .ToList();
                 // if employee is not in the NEW members list, delete that employee record
                 foreach (ProjectEmployee pe in exProjectEmployees)
@@ -134,63 +134,36 @@ namespace PIM.Infrastructure.Services
 
                     if (!duplicated)
                     {
-                        unitOfWork.ProjectEmployee.Add(
-                        new ProjectEmployee
+                        ProjectEmployee newProjectEmployeeRecord = new ProjectEmployee
                         {
-                            Project = a,
-                            Employee = validEmployee
-                        });
+                            ProjectId = selected.ID,
+                            EmployeeId = validEmployee.ID
+                        };
+                        unitOfWork.ProjectEmployee.Add(newProjectEmployeeRecord);
                     }
                 }
                 unitOfWork.Commit();
             }
         }
 
+       
         public IEnumerable<Project> Search(ProjectCriteria a)
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
             {
-                // if the full criteria is filled
-                if (a.Text.Length > 0 && a.Status != null)
+                var query = unitOfWork.Project.Get();
+                if (!string.IsNullOrEmpty(a.Text))
                 {
-                    // build a query with matching status
-                    var result =
-                        unitOfWork.Project.Get()
-                        .Where(p => p.Status == a.Status)
-                        .Where(p => p.Name.Contains(a.Text)
-                                || p.Customer.Contains(a.Text)
-                                || p.ProjectNumber.ToString().Contains(a.Text))
-                        .ToList();
-                    return result;
+                    query = query.Where(p => p.Name.Contains(a.Text)
+                                    || p.Customer.Contains(a.Text)
+                                    || p.ProjectNumber.ToString().Contains(a.Text));
                 }
-                // only status is selected
-                if (a.Text == "" && a.Status != null)
+                if (a.Status.HasValue)
                 {
-                    var result = unitOfWork.Project.Get()
-                        .Where(p => p.Status == a.Status)
-                        .ToList();
-                    return result;
+                    query = query.Where(p => p.Status == a.Status);
                 }
-
-                // only text is filled
-
-                if (a.Text.Length > 0 && a.Status == null)
-                {
-                    var result = unitOfWork.Project.Get()
-                        .Where(p => p.Name.Contains(a.Text)
-                                || p.Customer.Contains(a.Text)
-                                || p.ProjectNumber.ToString().Contains(a.Text))
-                        .ToList();
-                    return result;
-                }
-
-                // empty criteria
-                else
-                {
-                    return unitOfWork.Project.Get().ToList();
-                }
+                return query.OrderBy(p => p.ProjectNumber).ToList();
             }
-
         }
 
         public void Delete(Project a)
@@ -209,6 +182,16 @@ namespace PIM.Infrastructure.Services
                     unitOfWork.ProjectEmployee.Remove(exProjectEmployee.ID);
                 }
                 unitOfWork.Commit();
+            }
+
+        }
+
+        public void DeleteRange(List<Project> toDeleteList)
+        {
+
+            foreach (Project p in toDeleteList)
+            {
+                Delete(p);
             }
 
         }

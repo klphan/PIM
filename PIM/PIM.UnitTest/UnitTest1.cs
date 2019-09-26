@@ -86,13 +86,13 @@ namespace PIM.UnitTest
             IEnumerable<Project> textOnlyList = service.Search(textOnly);
             Assert.IsTrue(textOnlyList.Any());
             //search by status
-            //ProjectCriteria status = new ProjectCriteria { Status = Status.New };
-            //IEnumerable<Project> statusList = service.Search(status);
-            //Assert.IsTrue(statusList.Any());
+            ProjectCriteria status = new ProjectCriteria { Status = Status.New };
+            IEnumerable<Project> statusList = service.Search(status);
+            Assert.IsTrue(statusList.Any());
             //empty criteria
-            //ProjectCriteria noCriteria = new ProjectCriteria();
-            //IEnumerable<Project> noCriteriaList = service.Search(noCriteria);
-            //Assert.IsTrue(noCriteriaList.Any());
+            ProjectCriteria noCriteria = new ProjectCriteria();
+            IEnumerable<Project> noCriteriaList = service.Search(noCriteria);
+            Assert.IsTrue(noCriteriaList.Any());
 
         }
 
@@ -103,21 +103,38 @@ namespace PIM.UnitTest
             Project toUpdateProject = new Project
             {
                 GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
+                ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
                 ProjectNumber = 1117,
                 Name = "updated",
                 Customer = "updatedCustomer",
                 Status = Status.New,
                 StartDate = new DateTime(2016, 7, 15),
-                EndDate = new DateTime(2016, 5, 15)
+                EndDate = new DateTime(2016, 10, 15)
             };
-            service.Update(toUpdateProject, new List<string>());
-
+            service.Update(toUpdateProject, new List<string> { "aa1", "aa2", "aa3"});
+            var foundUpdated = service.Search(new ProjectCriteria { Text = "updated" });
+            Assert.IsTrue(foundUpdated.Any());
         }
 
         [TestMethod]
         public void TestDeleteProject()
         {
+            Project toDeleteProject = new Project
+            {
+                //Delete project with matching ID but different info
+                GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
+                ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
+                ProjectNumber = 1117,
+                Name = "updated",
+                Customer = "updatedCustomer",
+                Status = Status.New,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2016, 10, 15)
+            };
 
+            service.Delete(toDeleteProject);
+            var foundDeleted = service.Search(new ProjectCriteria { Text = "updated" });
+            Assert.IsTrue(!foundDeleted.Any());
         }
 
     }
