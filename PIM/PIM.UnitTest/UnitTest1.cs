@@ -1,18 +1,21 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PIM.Core;
+using PIM.Core.Exceptions;
 using PIM.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PIM.UnitTest
 {
     [TestClass]
     public class UnitTest1
     {
+
+        ProjectService service = new ProjectService();
         [TestMethod]
-        public void TestMethod1()
+        public void TestAddValidProject()
         {
-            ProjectService createProjectService = new ProjectService();
             Project validProject = new Project
             {
                 GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
@@ -23,6 +26,14 @@ namespace PIM.UnitTest
                 StartDate = new DateTime(2016, 7, 15),
                 EndDate = new DateTime(2017, 7, 15)
             };
+            service.Create(validProject, new List<string> { "aa1", "aa2", "aa3" });
+            var result = service.Search(new ProjectCriteria{Text = "projectname4"});
+            Assert.IsNotNull(result);
+
+        }
+        [TestMethod]
+        public void TestInvalidProjectNumber()
+        {
 
             Project invalidProject = new Project
             {
@@ -35,12 +46,81 @@ namespace PIM.UnitTest
                 EndDate = new DateTime(2017, 7, 15)
             };
 
-            createProjectService.Create(validProject, new List<string> { "aa1", "aa2", "aa3" });
-            createProjectService.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" });
-            var result = createProjectService.Search(new ProjectCriteria { Text = "customer1" });
+            service.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" });
             //(createProjectService.Create(validProject, new List<string>()));
-            Assert.IsNotNull(result);
+            Assert.ThrowsException<InvalidProjectNumberException>(() =>
+            service.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" }));
+        }
+
+        [TestMethod]
+        public void TestInvalidEndDate()
+        {
+            Project invalidEndDate = new Project
+            {
+                GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
+                ProjectNumber = 1114,
+                Name = "projectname4",
+                Customer = "customer4",
+                Status = Status.New,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2016, 5, 15)
+            };
+
+            Assert.ThrowsException<InvalidEndDateException>(() =>
+           service.Create(invalidEndDate, new List<string> { "aa1", "aa2", "aa3" }));
+        }
+
+        [TestMethod]
+        public void SearchProjects()
+        {
+            // search by text && status match
+            ProjectCriteria textStatus = new ProjectCriteria { Text = "c3", Status = Status.Finished };
+            IEnumerable<Project> textStatusList = service.Search(textStatus);
+            Assert.IsTrue(textStatusList.Any());
+            // search by text && status => expect empty list mismatch text status
+            ProjectCriteria invalidTextStatus = new ProjectCriteria { Text = "c3", Status = Status.New };
+            IEnumerable<Project> invalidTextStatusList = service.Search(invalidTextStatus);
+            Assert.IsTrue(!invalidTextStatusList.Any());
+            //search by text
+            ProjectCriteria textOnly = new ProjectCriteria { Text = "c3" };
+            IEnumerable<Project> textOnlyList = service.Search(textOnly);
+            Assert.IsTrue(textOnlyList.Any());
+            //search by status
+            //ProjectCriteria status = new ProjectCriteria { Status = Status.New };
+            //IEnumerable<Project> statusList = service.Search(status);
+            //Assert.IsTrue(statusList.Any());
+            //empty criteria
+            //ProjectCriteria noCriteria = new ProjectCriteria();
+            //IEnumerable<Project> noCriteriaList = service.Search(noCriteria);
+            //Assert.IsTrue(noCriteriaList.Any());
+
+        }
+
+        [TestMethod]
+        public void TestUpdateProject()
+        {
+
+            Project toUpdateProject = new Project
+            {
+                GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
+                ProjectNumber = 1117,
+                Name = "updated",
+                Customer = "updatedCustomer",
+                Status = Status.New,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2016, 5, 15)
+            };
+            service.Update(toUpdateProject, new List<string>());
+
+        }
+
+        [TestMethod]
+        public void TestDeleteProject()
+        {
+
         }
 
     }
 }
+
+

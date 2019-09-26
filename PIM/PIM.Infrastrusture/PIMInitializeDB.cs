@@ -22,6 +22,8 @@ namespace PIM.Infrastructure
             AddGroups(context, emp1, emp2, emp3, out group1, out group2, out group3);
 
             AddProjects(context, group1, group2, group3);
+
+            
             context.SaveChanges();
             base.Seed(context);
         }
@@ -59,7 +61,20 @@ namespace PIM.Infrastructure
                 EndDate = new DateTime(2017, 7, 15)
 
             };
-            context.Projects.AddRange(new List<Project> { project1, project2, project3 });
+
+            Project projectUpdateSelected = new Project
+            {
+                ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
+                GroupId = group3.ID,
+                ProjectNumber = 1117,
+                Name = "toUpdate",
+                Customer = "toUpdateCustomer",
+                Status = Status.Finished,
+                StartDate = new DateTime(2016, 7, 15),
+                EndDate = new DateTime(2017, 7, 15)
+
+            };
+            context.Projects.AddRange(new List<Project> { project1, project2, project3, projectUpdateSelected });
             context.SaveChanges();
         }
         private static void AddGroups(PIMContext context, Employee emp1, Employee emp2, Employee emp3, out Group group1, out Group group2, out Group group3)
