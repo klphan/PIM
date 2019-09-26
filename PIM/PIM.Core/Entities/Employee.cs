@@ -26,7 +26,7 @@ namespace PIM.Core
         public virtual Group IsGroupLeader { get; set; }
 
         //Navigation for ProjectEmployee
-        public virtual ProjectEmployee ProjectEmployee { get; set; }
+        public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
 
 
     }

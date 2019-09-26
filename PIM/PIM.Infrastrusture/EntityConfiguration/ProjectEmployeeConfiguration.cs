@@ -14,13 +14,21 @@ namespace PIM.Infrastructure.EntityConfiguration
         public ProjectEmployeeConfiguration()
         {
 
-            HasRequired(pe => pe.Project)
-                 .WithOptional(p => p.ProjectEmployee)
-                 .Map(pe => pe.MapKey("ProjectId"));
+            //HasRequired(pe => pe.Project)
+            //     .WithOptional(p => p.ProjectEmployee)
+            //     .Map(pe => pe.MapKey("ProjectId"));
 
-            HasRequired(pe => pe.Employee)
-                .WithOptional(e => e.ProjectEmployee)
-                .Map(pe => pe.MapKey("EmployeeId"));
+            HasOptional(pe => pe.Project)
+                .WithMany(p => p.ProjectEmployees)
+                .HasForeignKey(pe => pe.ProjectId);
+
+            HasOptional(pe => pe.Employee)
+               .WithMany(e => e.ProjectEmployees)
+               .HasForeignKey(pe => pe.EmployeeId);
+
+            //HasRequired(pe => pe.Employee)
+            //    .WithOptional(e => e.ProjectEmployee)
+            //    .Map(pe => pe.MapKey("EmployeeId"));
         }
     }
 }

@@ -28,7 +28,8 @@ namespace PIM.Core
         public virtual Group Group { get; set; }
         //navigation property for ProjectEmployee dbo
 
-        public virtual ProjectEmployee ProjectEmployee { get; set; }
+        //public virtual ProjectEmployee ProjectEmployee { get; set; }
+        public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
 
     }
 
