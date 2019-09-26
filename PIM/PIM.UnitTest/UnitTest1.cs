@@ -13,13 +13,12 @@ namespace PIM.UnitTest
         public void TestMethod1()
         {
             ProjectService createProjectService = new ProjectService();
-
             Project validProject = new Project
             {
-                GroupId = Guid.Parse("9C3F7E17-8849-4088-8F55-2D9E02435DE8"),
-                ProjectNumber = 1112,
-                Name = "projectname1",
-                Customer = "customer1",
+                GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
+                ProjectNumber = 1114,
+                Name = "projectname4",
+                Customer = "customer4",
                 Status = Status.New,
                 StartDate = new DateTime(2016, 7, 15),
                 EndDate = new DateTime(2017, 7, 15)
@@ -27,8 +26,8 @@ namespace PIM.UnitTest
 
             Project invalidProject = new Project
             {
-                GroupId = Guid.Parse("1B8616BC-E30B-4FF8-BA98-CDE8A01D1E01"),
-                ProjectNumber = 1112,
+                GroupId = Guid.Parse("95463135-09DA-420B-AC0F-63E0EDC6CA44"),
+                ProjectNumber = 1114,
                 Name = "projectname1",
                 Customer = "customer1",
                 Status = Status.New,
