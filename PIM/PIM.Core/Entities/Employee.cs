@@ -27,6 +27,10 @@ namespace PIM.Core
 
         //Navigation for ProjectEmployee
         public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
+        public Employee()
+        {
+            ProjectEmployees = new Collection<ProjectEmployee>();
+        }
 
 
     }

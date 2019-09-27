@@ -92,56 +92,41 @@ namespace PIM.Infrastructure.Services
             {
                 Validate(a, unitOfWork, editMode: true);
                 IList<Employee> validEmployees = ValidateMembers(members, unitOfWork);
-                Project selected = unitOfWork.Project.FindById(a.ID);
+                var selected = unitOfWork.Project.Get();
+                var selectedProject = selected.FirstOrDefault(p => p.ID == a.ID);
                 //Update record for the Project table
-                selected.Customer = a.Customer;
-                selected.GroupId = a.GroupId;
-                selected.EndDate = a.EndDate;
-                selected.StartDate = a.StartDate;
-                selected.Status = a.Status;
-
-
-                // ADD record to EmployeeProject table
-
-                // return a list of projectEmployees in ProjectEmployee table that has the matching project number
+                selectedProject.Customer = a.Customer;
+                selectedProject.GroupId = a.GroupId;
+                selectedProject.Name = a.Name;
+                selectedProject.EndDate = a.EndDate;
+                selectedProject.StartDate = a.StartDate;
+                selectedProject.Status = a.Status;
+                
+                //Get the Collection of the ProjectEmployee associated with this project
                 var exProjectEmployees = unitOfWork.ProjectEmployee.Get()
-                    .Where(pe => pe.ProjectId == selected.ID)
+                    .Where(pe => pe.ProjectId == selectedProject.ID)
                     .ToList();
-                // if employee is not in the NEW members list, delete that employee record
+
+                //delete all th exRecords
                 foreach (ProjectEmployee pe in exProjectEmployees)
                 {
-
-                    bool matched = validEmployees.Contains(pe.Employee);
-
-                    if (!matched)
-                    {
-                        var exProjectEmployee = unitOfWork.ProjectEmployee.Get()
-                            .FirstOrDefault(p => p.Employee == pe.Employee);
-                        unitOfWork.ProjectEmployee.Remove(exProjectEmployee.ID);
-                    }
-                }
-                // if member is not in the employees list, add new ProjectEmployee record
-                // extract the employees from exprojectEmployees to list
-                List<Employee> exEmployees = new List<Employee>();
-                foreach (ProjectEmployee pe in exProjectEmployees)
-                {
-                    exEmployees.Add(pe.Employee);
+                    unitOfWork.ProjectEmployee.Remove(pe.ID);
                 }
 
-                foreach (Employee validEmployee in validEmployees)
-                {
-                    bool duplicated = exEmployees.Contains(validEmployee);
-
-                    if (!duplicated)
+                // add new all records
+               
+                    foreach (Employee validEmployee in validEmployees)
                     {
-                        ProjectEmployee newProjectEmployeeRecord = new ProjectEmployee
+                        var newProjectEmployeeRecord = new ProjectEmployee
                         {
-                            ProjectId = selected.ID,
+                            ProjectId = selectedProject.ID,
                             EmployeeId = validEmployee.ID
                         };
-                        unitOfWork.ProjectEmployee.Add(newProjectEmployeeRecord);
+                        //unitOfWork.ProjectEmployee.Add(newProjectEmployeeRecord);
+                        selectedProject.ProjectEmployees.Add(newProjectEmployeeRecord);
                     }
-                }
+                
+                
                 unitOfWork.Commit();
             }
         }
@@ -176,7 +161,7 @@ namespace PIM.Infrastructure.Services
 
                 // remove associated ProjectEmployee Record
 
-                var filtered = unitOfWork.ProjectEmployee.Get().Where(pe => pe.Project == a).ToList();
+                var filtered = unitOfWork.ProjectEmployee.Get().Where(pe => pe.ProjectId == a.ID).ToList();
                 foreach (ProjectEmployee exProjectEmployee in filtered)
                 {
                     unitOfWork.ProjectEmployee.Remove(exProjectEmployee.ID);

@@ -31,6 +31,11 @@ namespace PIM.Core
         //public virtual ProjectEmployee ProjectEmployee { get; set; }
         public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
 
+        public Project()
+        {
+            ProjectEmployees = new Collection<ProjectEmployee>();
+        }
+
     }
 
     

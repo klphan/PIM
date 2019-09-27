@@ -58,7 +58,7 @@ namespace PIM.UnitTest
             Project invalidEndDate = new Project
             {
                 GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
-                ProjectNumber = 1114,
+                ProjectNumber = 1119,
                 Name = "projectname4",
                 Customer = "customer4",
                 Status = Status.New,
