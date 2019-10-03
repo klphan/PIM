@@ -1,0 +1,21 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Project Information Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("New", "New", "Projects")</li>
+                <li>@Html.ActionLink("Edit Project", "Index", "Home")</li>
+                <li>@Html.ActionLink("Customer", "About", "Home")</li>
+                <li>@Html.ActionLink("Supplier", "Contact", "Home")</li>
+            </ul>
+        </div>
+    </div>
+</div>
+

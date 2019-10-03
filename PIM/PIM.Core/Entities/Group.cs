@@ -10,12 +10,8 @@ namespace PIM.Core
 {
     public class Group : BaseEntity
     {
-      
-        
         public virtual Employee GroupLeader { get; set; }
-
         // Navigation property for Project
-       
         public Project Project { get; set; }
         public byte[] Version { get; set; }
         public ICollection<Project> Projects { get; set; }

@@ -1,0 +1,42 @@
+﻿@model PIM.Web.Models.NewProjectViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Project</h2>
+@using (Html.BeginForm("Create", "Projects"))
+{
+    <div class="form-group">
+        @Html.LabelFor(p => p.Name)
+        @Html.TextBoxFor(p => p.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Customer)
+        @Html.TextBoxFor(p => p.Customer, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.GroupId)
+        @Html.TextBoxFor(p => p.GroupId, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.ProjectEmployees)
+        @Html.TextBoxFor(p => p.ProjectEmployees, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Status)
+        @Html.TextBoxFor(p => p.Status, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.StartDate)
+        @Html.TextBoxFor(p => p.StartDate, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.EndDate)
+        @Html.TextBoxFor(p => p.EndDate, new { @class = "form-control" })
+    </div>
+
+
+
+}
+

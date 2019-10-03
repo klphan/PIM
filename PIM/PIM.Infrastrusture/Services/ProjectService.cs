@@ -24,7 +24,7 @@ namespace PIM.Infrastructure.Services
                     throw new InvalidProjectNumberException(message);
                 }
             }
-            if (a.EndDate != null && a.EndDate < a.StartDate)
+            if (a.EndDate != null && a.EndDate < a.EndDate)
             {
                 var message = "End date must be later than start date";
                 Console.WriteLine(message);
@@ -84,6 +84,7 @@ namespace PIM.Infrastructure.Services
 
                 unitOfWork.Commit();
             }
+        
 
         }
         public void Update(Project a, List<string> members)
@@ -99,9 +100,9 @@ namespace PIM.Infrastructure.Services
                 selectedProject.GroupId = a.GroupId;
                 selectedProject.Name = a.Name;
                 selectedProject.EndDate = a.EndDate;
-                selectedProject.StartDate = a.StartDate;
+                selectedProject.EndDate = a.EndDate;
                 selectedProject.Status = a.Status;
-                
+
                 //Get the Collection of the ProjectEmployee associated with this project
                 var exProjectEmployees = unitOfWork.ProjectEmployee.Get()
                     .Where(pe => pe.ProjectId == selectedProject.ID)
@@ -114,28 +115,34 @@ namespace PIM.Infrastructure.Services
                 }
 
                 // add new all records
-               
-                    foreach (Employee validEmployee in validEmployees)
+
+                foreach (Employee validEmployee in validEmployees)
+                {
+                    var newProjectEmployeeRecord = new ProjectEmployee
                     {
-                        var newProjectEmployeeRecord = new ProjectEmployee
-                        {
-                            ProjectId = selectedProject.ID,
-                            EmployeeId = validEmployee.ID
-                        };
-                        //unitOfWork.ProjectEmployee.Add(newProjectEmployeeRecord);
-                        selectedProject.ProjectEmployees.Add(newProjectEmployeeRecord);
-                    }
-                
-                
+                        ProjectId = selectedProject.ID,
+                        EmployeeId = validEmployee.ID
+                    };
+                    //unitOfWork.ProjectEmployee.Add(newProjectEmployeeRecord);
+                    selectedProject.ProjectEmployees.Add(newProjectEmployeeRecord);
+                }
+
+
                 unitOfWork.Commit();
             }
         }
+        public Project GetProject(Guid id)
+        {
+            using (var unitOfWork = new UnitOfWork(new PIMContext())) {
+                Project project = unitOfWork.Project.FindById(id);
+                return project;
 
-       
+            }
+        }
+
         public IEnumerable<Project> Search(ProjectCriteria a)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
-            {
+            using (var unitOfWork = new UnitOfWork(new PIMContext())) {
                 var query = unitOfWork.Project.Get();
                 if (!string.IsNullOrEmpty(a.Text))
                 {
@@ -168,7 +175,6 @@ namespace PIM.Infrastructure.Services
                 }
                 unitOfWork.Commit();
             }
-
         }
 
         public void DeleteRange(List<Project> toDeleteList)

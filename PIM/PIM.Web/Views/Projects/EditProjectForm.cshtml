@@ -1,0 +1,53 @@
+﻿@model PIM.Web.Models.ProjectFormViewModel
+
+@{
+    ViewBag.Title = "EditProjectForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Project</h2>
+@using (Html.BeginForm("Edit", "Projects"))
+{
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.ProjectNumber)
+        @Html.TextBoxFor(p => p.Project.ProjectNumber, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.Name)
+        @Html.TextBoxFor(p => p.Project.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.Customer)
+        @Html.TextBoxFor(p => p.Project.Customer, new { @class = "form-control" })
+    </div>
+    @*<div class="form-group">
+            @Html.LabelFor(p => p.Project.GroupId)
+            @Html.TextBoxFor(p => p.Project.GroupId, new { @class = "form-control" })
+        </div>*@
+    <!--- //drop down list for group and status ---->
+    <div class="form-group">
+        @Html.LabelFor(p => p.Group)
+        @Html.DropDownListFor(p => p.Group, new SelectList(Model.Group, "ID"), "Select Group", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.Status)
+        @Html.EnumDropDownListFor(p => p.Project.Status, "Select Status", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.StartDate)
+        @Html.TextBoxFor(p => p.Project.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.EndDate)
+        @Html.TextBoxFor(p => p.Project.EndDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Members)
+        @Html.TextBoxFor(p => p.Members, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit Project</button>
+
+}
+

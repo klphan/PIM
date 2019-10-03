@@ -9,17 +9,25 @@ namespace PIM.Core
 
     public class Project : BaseEntity
     {
+
+        [Display(Name = "Group")]
         public Guid GroupId { get; set; }
-        // beacause this conflicts the navagation property Group with the method mapkey
+
+        // because this conflicts the navagation property Group with the method mapkey
+        [Display(Name = "Project Number")]
         public decimal ProjectNumber { get; set; }
 
+        [Display(Name = "Project Name")]
         public string Name { get; set; }
 
         public string Customer { get; set; }
 
         public Status Status { get; set; }
 
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
+
+        [Display(Name = "End Date")]
         public DateTime? EndDate { get; set; }
       
         public byte[] Version { get; set; }
