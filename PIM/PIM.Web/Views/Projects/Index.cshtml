@@ -37,11 +37,11 @@ else
         <tr>
             <td><input type="checkbox"></td>
             <td>@project.ProjectNumber</td>
-            <td>@Html.ActionLink(project.Name,"EditProjectForm", "Projects", null, new { id = project.ID }) </td>
+            <td>@Html.ActionLink(project.Name,"EditProjectForm", "Projects", null, new { id = project.ID })</td>
             <td>@project.Status</td>
             <td>@project.Customer</td>
             <td>@project.StartDate</td>
-            <td>deleteIcon(newProject)</td>
+            <td>@project.ID</td>
 
 
         </tr>

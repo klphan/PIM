@@ -34,7 +34,7 @@ namespace PIM.Web.Controllers
             };
             return View("ProjectForm", viewModel);
         }
-        //[Route("Projects/EditProjectForm/{id}") ]
+        //[Route("EditProjectForm/{id}") ]
         public ViewResult EditProjectForm(Guid id)
         {
             //Add a method to ProjectService to get project
@@ -58,6 +58,19 @@ namespace PIM.Web.Controllers
             //convert the string Memebers into a list of members
             String[] separators = { ", ", ",", " ,", " " };
             List<string> members = viewModel.Members.Split(separators, StringSplitOptions.None).ToList();
+            // use model state property to change the flow of the program
+            //, if the information entered is not valid, redirect the user to the same view
+            if (!ModelState.IsValid)
+            {
+                var errViewModel = new ProjectFormViewModel
+                {
+                    Project = viewModel.Project,
+                    GroupIds = viewModel.GroupIds,
+                    Members = viewModel.Members
+
+                };
+                return View("ProjectForm", errViewModel);
+            }
             projectService.Create(viewModel.Project, members);
 
             //TODO: empty string in members-> the following visa does not exist
