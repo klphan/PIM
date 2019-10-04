@@ -17,36 +17,36 @@ namespace PIM.Web.Controllers
         private PIMContext _context;
         private GroupService groupService;
         private ProjectService projectService;
+        private IEnumerable<Guid> defaultGroupIds;
 
         public ProjectsController()
         {
             _context = new PIMContext();
             projectService = new ProjectService();
             groupService = new GroupService();
+            // defaultGroupIds to avoid repetition calling groupId() and re-initialise viewModel
+            defaultGroupIds = groupService.GetGroupId();
         }
         public ViewResult NewProjectForm()
         {
             //TODO: Build GroupService to get all group
-            var groupIds = groupService.GetGroupId();
-            var viewModel = new ProjectFormViewModel
+            var defaultViewModel = new ProjectFormViewModel
             {
-                GroupIds = groupIds
+                GroupIds = defaultGroupIds
             };
-            return View("ProjectForm", viewModel);
+            return View("ProjectForm", defaultViewModel);
         }
         //[Route("EditProjectForm/{id}") ]
         public ViewResult EditProjectForm(Guid id)
         {
             //Add a method to ProjectService to get project
             var project = projectService.GetProject(id);
-            var groupIds = groupService.GetGroupId();
-            
             var viewModel = new ProjectFormViewModel
             {
 
                 Project = project,
                 EditMode = true,
-                GroupIds = groupIds
+                GroupIds = defaultGroupIds
                 // TODO: Get the list of ex employees in form of string
                 //Members = 
             };
@@ -55,26 +55,31 @@ namespace PIM.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProjectFormViewModel viewModel)
         {
+            //BUGS always enter if statement regardless: fix bug by remove the check for Project.ID in view Model
+            ModelState.Remove("Project.ID");
+            if (!ModelState.IsValid) //because the ModelState will check for empty ID also
+            {
+                var errViewModel = new ProjectFormViewModel
+                {
+                    //groupIds of viewModel is currently empty so must set back to default
+                    GroupIds = defaultGroupIds,
+                    Project = viewModel.Project,
+                    Members = viewModel.Members,
+                };
+                return View("ProjectForm", errViewModel);
+            }
+            
             //convert the string Memebers into a list of members
             String[] separators = { ", ", ",", " ,", " " };
             List<string> members = viewModel.Members.Split(separators, StringSplitOptions.None).ToList();
             // use model state property to change the flow of the program
             //, if the information entered is not valid, redirect the user to the same view
-            if (!ModelState.IsValid)
-            {
-                var errViewModel = new ProjectFormViewModel
-                {
-                    Project = viewModel.Project,
-                    GroupIds = viewModel.GroupIds,
-                    Members = viewModel.Members
-
-                };
-                return View("ProjectForm", errViewModel);
-            }
+            
+        
             projectService.Create(viewModel.Project, members);
 
             //TODO: empty string in members-> the following visa does not exist
-            //TODO: dropdownList for Group
+            //TODO: dropdownList for Group, with group leader name
 
             return RedirectToAction("Index", "Projects");
         }
@@ -85,23 +90,40 @@ namespace PIM.Web.Controllers
             List<string> members = viewModel.Members.Split(separators, StringSplitOptions.None).ToList();
 
             projectService.Update(viewModel.Project, members);
-            return View("Index");
+            return RedirectToAction("Index", "Projects");
         }
         //TODO: Implement Search method
-        public ActionResult Search(ProjectFormViewModel viewModel)
+        public ActionResult Search(IndexPageViewModel viewModel)
         {
+            IEnumerable<Project> projects = projectService.Search(viewModel.ProjectCriteria);
+            var searchView = new IndexPageViewModel
+            {
+                ProjectCriteria = viewModel.ProjectCriteria,
+                Projects = projects
+            };
 
-            return View("Index");
+            return View("Index", searchView);
         }
         public ViewResult Index()
         {
             var projects = _context.Projects.OrderBy(p => p.ProjectNumber).ToList();
-            return View(projects);
+
+            var newIndexPageView = new IndexPageViewModel
+            {
+                Projects = projects,
+                ProjectCriteria = new ProjectCriteria()
+
+            };
+            return View(newIndexPageView);
         }
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
         }
+        //public ActionResult Delete(Guid id)
+        //{
+        //    projectService.Delete(id);
+        //}
 
     }
 }

@@ -14,18 +14,18 @@
     else
     { <h2>New Project</h2>}
 
-<div class="form-group">
-    @Html.LabelFor(p => p.Project.ProjectNumber)
-    @if (Model.EditMode == true)
-    {
-        @Html.TextBoxFor(p => p.Project.ProjectNumber, new { @class = "form-control", @readonly = "readonly" })
-    }
-    else
-    {
-        @Html.TextBoxFor(p => p.Project.ProjectNumber, new { @class = "form-control" })
-    }
-
-</div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Project.ProjectNumber)
+        @if (Model.EditMode == true)
+        {
+            @Html.TextBoxFor(p => p.Project.ProjectNumber, new { @class = "form-control", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.TextBoxFor(p => p.Project.ProjectNumber, new { @class = "form-control" })
+        }
+        @Html.ValidationMessageFor(p => p.Project.ProjectNumber)
+    </div>
     <div class="form-group">
         @Html.LabelFor(p => p.Project.Name)
         @Html.TextBoxFor(p => p.Project.Name, new { @class = "form-control" })
@@ -34,10 +34,7 @@
         @Html.LabelFor(p => p.Project.Customer)
         @Html.TextBoxFor(p => p.Project.Customer, new { @class = "form-control" })
     </div>
-    @*<div class="form-group">
-            @Html.LabelFor(p => p.Project.GroupId)
-            @Html.TextBoxFor(p => p.Project.GroupId, new { @class = "form-control" })
-        </div>*@
+   
     <div class="form-group">
         @Html.LabelFor(p => p.Project.GroupId)
         @Html.DropDownListFor(p => p.Project.GroupId, new SelectList(Model.GroupIds), "Select Group", new { @class = "form-control" })
@@ -61,8 +58,8 @@
     </div>
 
     <div>
-        @Html.LabelFor(p => p.Project.ID)
-        @Html.TextBoxFor(p => p.Project.ID)
+        @Html.HiddenFor(p => p.Project.ID)
+       
     </div>
 
     <button type="button" class="btn">@Html.ActionLink("Cancel", "Index", "Projects")</button>

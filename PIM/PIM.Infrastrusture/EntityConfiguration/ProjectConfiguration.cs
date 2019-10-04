@@ -13,8 +13,7 @@ namespace PIM.Infrastructure.EntityConfiguration
     {
         public ProjectConfiguration()
         {
-            Property(p => p.ID)
-                .IsRequired();
+            
 
             Property(p => p.ProjectNumber)
                 .IsRequired()
