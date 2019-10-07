@@ -36,36 +36,48 @@ else
         <tbody>
             @foreach (var project in Model.Projects)
             {
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>@project.ProjectNumber</td>
+            <tr>
+                @if (project.Status == PIM.Core.Status.New)
+                {
+                    <td><input type="checkbox" name="@project.Name" value="@project.ID"></td>
+                }
+                else
+                {
+                    <td></td>
+                }
+
+                <td>@project.ProjectNumber</td>
+                <td>
+                    <a href="/Projects/EditProjectForm/@project.ID" id="@project.ID">@project.Name</a>
+                </td>
+                <td>@project.Status</td>
+                <td>@project.Customer</td>
+                <td>@project.StartDate</td>
+
+                @if (project.Status == PIM.Core.Status.New)
+                {
                     <td>
-                        <a href="/Projects/EditProjectForm/@project.ID" id="@project.ID">@project.Name</a>
+
+                        <a href="/Projects/Delete/@project.ID" id="@project.ID">
+                            delete
+                        </a>
                     </td>
-                    <td>@project.Status</td>
-                    <td>@project.Customer</td>
-                    <td>@project.StartDate</td>
-
-                    @if (project.Status == PIM.Core.Status.New)
-                    {
-                        <td>
-                            
-                            <a href="/Projects/Delete/@project.ID" id="@project.ID">
-                                delete
-                            </a>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                }
+                else
+                {
+                    <td></td>
+                }
 
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
+    <div>
+        @Html.ActionLink("New Project", "NewProjectForm", "Projects", null, new { @class = "btn btn-primary" })
+    </div>
 }
+
 @*@section scripts
     {
         <script>

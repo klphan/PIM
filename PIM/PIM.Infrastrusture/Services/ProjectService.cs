@@ -158,17 +158,17 @@ namespace PIM.Infrastructure.Services
             }
         }
 
-        public void Delete(Project a)
+        public void Delete(Guid id)
         {
             // build query to remove a project with an id
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
             {
                 // remove record from the project table
-                unitOfWork.Project.Remove(a.ID);
+                unitOfWork.Project.Remove(id);
 
                 // remove associated ProjectEmployee Record
 
-                var filtered = unitOfWork.ProjectEmployee.Get().Where(pe => pe.ProjectId == a.ID).ToList();
+                var filtered = unitOfWork.ProjectEmployee.Get().Where(pe => pe.ProjectId == id).ToList();
                 foreach (ProjectEmployee exProjectEmployee in filtered)
                 {
                     unitOfWork.ProjectEmployee.Remove(exProjectEmployee.ID);
@@ -177,12 +177,12 @@ namespace PIM.Infrastructure.Services
             }
         }
 
-        public void DeleteRange(List<Project> toDeleteList)
+        public void DeleteRange(List<Guid> ids)
         {
 
-            foreach (Project p in toDeleteList)
+            foreach (Guid id in ids)
             {
-                Delete(p);
+                Delete(id);
             }
 
         }

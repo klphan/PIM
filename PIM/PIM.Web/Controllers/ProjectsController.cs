@@ -56,7 +56,7 @@ namespace PIM.Web.Controllers
         public ActionResult Create(ProjectFormViewModel viewModel)
         {
             //BUGS always enter if statement regardless: fix bug by remove the check for Project.ID in view Model
-            ModelState.Remove("Project.ID");
+            ModelState.Remove("Project.ID"); //ModelState here is the ProjectFormViewModel
             if (!ModelState.IsValid) //because the ModelState will check for empty ID also
             {
                 var errViewModel = new ProjectFormViewModel
@@ -120,10 +120,11 @@ namespace PIM.Web.Controllers
         {
             _context.Dispose();
         }
-        //public ActionResult Delete(Guid id)
-        //{
-        //    projectService.Delete(id);
-        //}
+        public ActionResult Delete(Guid id)
+        {
+            projectService.Delete(id);
+            return RedirectToAction("Index", "Projects");
+        }
 
     }
 }

@@ -10,6 +10,7 @@ namespace PIM.Web.Models
     {
         public IEnumerable<Guid> GroupIds { get; set; }
         public Project Project { get; set; }
+        //TODO: Add custom validation for Members
         public string Members { get; set; }
         public bool EditMode { get; set; }
     }

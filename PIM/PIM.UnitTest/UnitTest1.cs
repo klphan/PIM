@@ -132,7 +132,7 @@ namespace PIM.UnitTest
                 EndDate = new DateTime(2016, 10, 15)
             };
 
-            service.Delete(toDeleteProject);
+            service.Delete(toDeleteProject.ID);
             var foundDeleted = service.Search(new ProjectCriteria { Text = "updated" });
             Assert.IsTrue(!foundDeleted.Any());
         }
