@@ -44,10 +44,10 @@
   <ItemGroup>
     <Compile Include="Entities\ProjectEmployee.cs" />
     <Compile Include="Entities\Status.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\InvalidProjectNumberException.cs" />
     <Compile Include="Exceptions\InvalidEndDateException.cs" />
     <Compile Include="Exceptions\InvalidVisaException.cs" />
-    <Compile Include="Exceptions\SampleException.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Entities\Project.cs" />

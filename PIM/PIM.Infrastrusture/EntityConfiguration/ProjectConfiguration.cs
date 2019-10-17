@@ -13,15 +13,13 @@ namespace PIM.Infrastructure.EntityConfiguration
     {
         public ProjectConfiguration()
         {
-            
+
 
             Property(p => p.ProjectNumber)
-                .IsRequired()
-                .HasPrecision(4, 0);
+                .IsRequired();
+                
 
-            Property(p => p.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+            
 
             //Foreign key to Group
             //Indepedent Association so use the Map method
@@ -35,15 +33,9 @@ namespace PIM.Infrastructure.EntityConfiguration
             // .WithOptional(g => g.Project)
             // .Map(p => p.MapKey("GroupId"));
 
-            Property(p => p.Customer)
-                .IsRequired()
-                .HasMaxLength(50);
+            
 
-            Property(p => p.Status)
-                .IsRequired();
-
-            Property(p => p.StartDate)
-                .IsRequired();
+       
         }
 
     }

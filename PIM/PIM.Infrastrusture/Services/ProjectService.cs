@@ -24,7 +24,7 @@ namespace PIM.Infrastructure.Services
                     throw new InvalidProjectNumberException(message);
                 }
             }
-            if (a.EndDate != null && a.EndDate < a.EndDate)
+            if (a.EndDate != null && a.EndDate < a.StartDate)
             {
                 var message = "End date must be later than start date";
                 Console.WriteLine(message);
@@ -56,7 +56,7 @@ namespace PIM.Infrastructure.Services
 
             if (invalidVisa.Count() > 0)
             {
-                var message = "The following visas do not exist" + string.Join(",", invalidVisa);
+                var message = "The following visas do not exist: " + string.Join(",", invalidVisa);
                 Console.WriteLine(message);
                 throw new InvalidVisaException(message);
             }
@@ -187,6 +187,30 @@ namespace PIM.Infrastructure.Services
 
         }
 
+        public IEnumerable<Project> Index()
+        {
+            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            {
+                var query = unitOfWork.Project.Get();
+                
+                return query.OrderBy(p => p.ProjectNumber).ToList();
+            }
+        }
+
+        public List<string> GetEmployees(Guid id)
+        {
+            using(var unitOfWork = new UnitOfWork(new PIMContext()))
+            {
+                List<String> empVisas = new List<string>();
+                var query = unitOfWork.ProjectEmployee.Get().Where(pe => pe.ProjectId == id); 
+                foreach(ProjectEmployee pe in query)
+                {
+                    var empVisa = pe.Employee.Visa;
+                    empVisas.Add(empVisa);
+                }
+                return empVisas;
+            }
+        }
     }
 }
 

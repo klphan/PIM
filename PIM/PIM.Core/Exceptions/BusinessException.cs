@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace PIM.Core.Exceptions
 {
-    class SampleException
+    public class BusinessException : Exception
     {
+        public BusinessException(string message) : base(message)
+        {
+        }
+
     }
 }

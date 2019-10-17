@@ -1,14 +1,12 @@
 ﻿@model PIM.Web.Models.IndexPageViewModel
 @using (Html.BeginForm("Search", "Projects"))
 {
-    <div class="form-group">
-        @Html.LabelFor(p => p.ProjectCriteria.Status)
-        @Html.EnumDropDownListFor(p => p.ProjectCriteria.Status, "Select Status", new { @class = "form-control" })
+    <div id="searchView">
+        <span>@Html.TextBoxFor(p => p.ProjectCriteria.Text, new {size = 50, placeholder = "Project Number, Project Name or Customer Name", @class = "form-control" })</span>
+
+        <span>@Html.EnumDropDownListFor(p => p.ProjectCriteria.Status, "Select Status", new {@class = "form-control" })</span>
+
+        <span><button type="submit" class="btn btn-primary custom-btn">Search Project</button></span>
+        <span>@Html.ActionLink("Reset Search", "Index", "Projects", null, new { @class = "btn btn-primary custom-btn" })</span>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(p => p.ProjectCriteria.Text)
-        @Html.TextBoxFor(p => p.ProjectCriteria.Text, new { @class = "form-control" })
-    </div>
-    <button type="submit" class="btn btn-primary">Search Project</button>
-    @Html.ActionLink("Reset", "Index", "Projects", null, new { @class = "btn btn-primary" })
 }

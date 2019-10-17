@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PIM.Core.Exceptions
 {
-    public class InvalidProjectNumberException: Exception
+    public class InvalidProjectNumberException: BusinessException
     {
         public InvalidProjectNumberException(string message) : base(message)
         {

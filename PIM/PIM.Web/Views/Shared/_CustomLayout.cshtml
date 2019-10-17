@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Project Information Management</title>
+
+
+    @Styles.Render("~/Content/bootstrap-sandstone.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/Custom.css")
+    @Styles.Render("~/Content/bootstrap.css")
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="header" class="row">
+            <span><img src="~/Resources/elca-logo-300.png" alt="logo" align="left" width="40" height="40"></span>
+            <h4>Project Information Management</h4>
+        </div>
+        <div id="content" class="row">
+            <div id="column1" class="col-md-2">
+                <ul>
+                    <li><h4><a href="/Projects/Index/">Project List</a></h4></li>
+                    <li><a href="/Projects/ProjectDetails/">New Project</a></li>
+                </ul>
+            </div>
+            <div id="column2" class="col-md-10">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+@RenderSection("scripts", false)
+</html>

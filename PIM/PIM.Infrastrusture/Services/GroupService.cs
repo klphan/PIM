@@ -9,19 +9,18 @@ namespace PIM.Infrastructure.Services
 {
     public class GroupService
     {
-        public IEnumerable<Guid> GetGroupId()
+        public IEnumerable<Group> GetGroup()
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
             {
                 
                 var allGroups = unitOfWork.Group.Get().ToList();
-                List<Guid> GroupIds= new List<Guid>();
-
-                foreach (var group in allGroups)
+                List<string> groupLeaderNames = new List<string>();
+                foreach (Group group in allGroups)
                 {
-                    GroupIds.Add(group.ID);
-                }
-                return GroupIds;
+                    groupLeaderNames.Add(group.GroupLeader.FirstName + group.GroupLeader.LastName);
+                };
+                return allGroups;
             }
         }
     }

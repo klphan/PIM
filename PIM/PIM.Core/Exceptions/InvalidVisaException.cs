@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PIM.Core.Exceptions
 {
-    public class InvalidVisaException : Exception
+    public class InvalidVisaException : BusinessException
     {
         public InvalidVisaException(string message) : base(message)
         {
