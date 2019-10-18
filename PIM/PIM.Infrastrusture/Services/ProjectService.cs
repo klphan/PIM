@@ -99,7 +99,7 @@ namespace PIM.Infrastructure.Services
                 selectedProject.Customer = a.Customer;
                 selectedProject.GroupId = a.GroupId;
                 selectedProject.Name = a.Name;
-                selectedProject.EndDate = a.EndDate;
+                selectedProject.StartDate = a.StartDate;
                 selectedProject.EndDate = a.EndDate;
                 selectedProject.Status = a.Status;
 
