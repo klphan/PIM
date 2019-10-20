@@ -51,6 +51,7 @@ li {
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: 4px;
+    width:100%;
 }
 
 
@@ -82,7 +83,6 @@ li {
     font-size: 1.1em;
 }
 #projects-btn {
-    margin-left: 500px;
     display: block;
 }
 #cancel-btn {
@@ -90,6 +90,7 @@ li {
 }
 #projects-btn .btn {
     font-size:x-small;
+    width:100%;
 }
 .readonly {
     background-color: #ced4da;

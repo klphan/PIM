@@ -1,4 +1,5 @@
 ﻿@model PIM.Web.Models.IndexPageViewModel
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
@@ -14,86 +15,94 @@
 else
 {
 
+    using (Html.BeginForm("DeleteRange", "Projects", FormMethod.Post))
+    {
 
-    <table style="width:100%" id="customers" class="table table-bordered table-hover table-sm">
-        <thead>
-            <tr>
-                <th style="width: 3%"></th>
-                <th style="width: 5%">Number</th>
-                <th style="width: 45%">Project Name</th>
-                <th style="width: 10%">Status</th>
-                <th style="width: 20%">Customer</th>
-                <th style="width: 10%">Start Date</th>
-                <th style="width: 7%">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var project in Model.Projects)
-            {
-                <tr id="@project.ID">
-                    @if (project.Status == PIM.Core.Status.New)
-                    {
-                        <td align="center"><input type="checkbox" name="@project.Name" value="@project.ID"> </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-
-                    <td><a href="/Projects/ProjectDetails/@project.ID" id="@project.ID"> @project.ProjectNumber</a></td>
-                    <td>@project.Name</td>
-                    <td>@project.Status</td>
-                    <td>@project.Customer</td>
-                    <td input type="date">@project.StartDate.ToString("dd/MM/yyyy")</td>
-
-                    @if (project.Status == PIM.Core.Status.New)
-                    {
-                        <td align="center">
-                            @using (Html.BeginForm("Delete", "Projects", FormMethod.Post, new { id = "DeleteForm" }))
-                            {
-
-                                <input name="id" value="@project.ID" type="hidden" />
-
-                                <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" align="middle"></button>
-                            }
-                        </td>
-
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+        <table style="width:100%" id="customers" class="table table-bordered table-hover table-sm">
+            <thead>
+                <tr>
+                    <th style="width: 3%"></th>
+                    <th style="width: 5%">Number</th>
+                    <th style="width: 45%">Project Name</th>
+                    <th style="width: 10%">Status</th>
+                    <th style="width: 20%">Customer</th>
+                    <th style="width: 10%">Start Date</th>
+                    <th style="width: 7%">Delete</th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model.Projects) { 
+                    <tr id="@project.ID">
+                        @if (project.Status == PIM.Core.Status.New)
+                        {
+                            <td align="center"><input type="checkbox" name="projectIdsToDelete" id="projectIdsToDelete" value="@project.ID"> </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+                        <td><a href="/Projects/ProjectDetails/@project.ID" id="@project.ID"> @project.ProjectNumber</a></td>
+                        <td>@project.Name</td>
+                        <td>@project.Status</td>
+                        <td>@project.Customer</td>
+                        <td input type="date">@project.StartDate.ToString("dd/MM/yyyy")</td>
+
+                        @if (project.Status == PIM.Core.Status.New)
+                        {
+                            <td align="center">
+                                @using (Html.BeginForm("Delete", "Projects", FormMethod.Post, new { id = "DeleteForm" }))
+                                {
+
+                                    <input name="id" value="@project.ID" type="hidden" />
+
+                                    <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" align="middle"></button>
+                                }
+                            </td>
+
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
 
 
-            }
-        </tbody>
-    </table>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
+                }
+            </tbody>
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Confirm Delete</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </table>
+        <input type="submit" class="delete-button" value="Delete selected item" onclick="return confirm('Are you sure?')" />
+        <p id="countChecks">countCheck</p>
+        <br />
+       
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirm Delete</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete selected project?</p>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" id="btnDeleteYes" heref="#">Yes</button>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            No
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete selected project?</p>
-                </div>
-                <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary" id="btnDeleteYes" heref="#">Yes</button>
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        No
-                    </button>
-                </div>
             </div>
-
         </div>
-    </div>
+    }
+
 }
 @section scripts {
     @Scripts.Render("~/Scripts/projects.js")

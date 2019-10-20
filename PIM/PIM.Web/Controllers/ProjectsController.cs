@@ -9,6 +9,7 @@ using PIM.Core;
 using System.Data.Entity;
 using PIM.Infrastructure.Services;
 using PIM.Core.Exceptions;
+using PagedList;
 
 namespace PIM.Web.Controllers
 {
@@ -110,49 +111,6 @@ namespace PIM.Web.Controllers
         {
             return CatchException(viewModel);//missing return cause bugs
 
-
-            //var errViewModel = new ProjectFormViewModel
-            //{
-            //    //groupIds of viewModel is currently empty so must set back to default
-            //    Groups = defaultGroupIdsLeaders,
-            //    Project = viewModel.Project,
-            //    Members = viewModel.Members,
-            //};
-
-            //ModelState.Remove("Project.ID"); //ModelState here is the ProjectFormViewModel
-            //if (!ModelState.IsValid) //because the ModelState will check for empty ID also
-            //{
-            //    return View("ProjectDetails", errViewModel);
-            //}
-            //List<string> members = ParseEmployees(viewModel);
-            //// use model state property to change the flow of the program
-            ////, if the information entered is not valid, redirect the user to the same view
-            ////Step2: Check for business logic, custom validation class from the server
-            //try
-            //{
-            //    projectService.Create(viewModel.Project, members);
-            //}
-            //catch (InvalidProjectNumberException ex)
-            //{
-            //    //the assigment errorViewModel.Exception = ex; will prevent the printing 
-            //    // of errot message: Please enter all the mandatory fields
-            //    errViewModel.Exception = ex;
-            //    ModelState.AddModelError(string.Empty, ex.Message);
-            //    return View("ProjectDetails", errViewModel);
-            //}
-            //catch (InvalidEndDateException ex)
-            //{
-            //    errViewModel.Exception = ex;
-            //    ModelState.AddModelError(string.Empty, ex.Message);
-            //    return View("ProjectDetails", errViewModel);
-            //}
-            //catch (InvalidVisaException ex)
-            //{
-            //    errViewModel.Exception = ex;
-            //    ModelState.AddModelError(string.Empty, ex.Message);
-            //    return View("ProjectDetails", errViewModel);
-            //}
-            //return RedirectToAction("Index", "Projects");
         }
 
         private static List<string> ParseEmployees(ProjectFormViewModel viewModel)
@@ -175,28 +133,8 @@ namespace PIM.Web.Controllers
             viewModel.EditMode = true;
             return CatchException(viewModel);
             
-            //List<string> members = ParseEmployees(viewModel);
-            //var errViewModel = new ProjectFormViewModel
-            //{
-            //    //groupIds of viewModel is currently empty so must set back to default
-            //    Groups = defaultGroupIdsLeaders,
-            //    Project = viewModel.Project,
-            //    Members = viewModel.Members,
-            //};
-            //try
-            //{
-            //    projectService.Update(viewModel.Project, members);
-            //}
-            //catch (BusinessException ex)
-            //{
-            //    errViewModel.Exception = ex;
-            //    errViewModel.EditMode = true;
-            //    ModelState.AddModelError(string.Empty, ex.Message);
-            //    return View("ProjectDetails", errViewModel);
-            //}
-
+           
         }
-        //TODO: Implement Search method
         public ActionResult Search(IndexPageViewModel viewModel)
         {
             IEnumerable<Project> projects = projectService.Search(viewModel.ProjectCriteria);
@@ -218,12 +156,22 @@ namespace PIM.Web.Controllers
                 ProjectCriteria = new ProjectCriteria()
 
             };
-            return View(newIndexPageView);
+            
+           return View(newIndexPageView);
         }
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
             projectService.Delete(id);
+            return RedirectToAction("Index", "Projects");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteRange(IEnumerable<Guid> projectIdsToDelete)
+        {//name of parameter matching the name of checkbox in index.cshtml
+            // because the submit delete button will pass the list of selected id into 
+            // this argument by default
+            projectService.DeleteRange(projectIdsToDelete);
             return RedirectToAction("Index", "Projects");
         }
 

@@ -177,7 +177,7 @@ namespace PIM.Infrastructure.Services
             }
         }
 
-        public void DeleteRange(List<Guid> ids)
+        public void DeleteRange(IEnumerable<Guid> ids)
         {
 
             foreach (Guid id in ids)
