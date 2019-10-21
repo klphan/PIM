@@ -11,30 +11,39 @@ namespace PIM.Infrastructure
 {
     public class PIMInitializeDB : DropCreateDatabaseAlways<PIMContext>
     {
+        public static readonly Guid Group1Id = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE");
+        public static readonly Guid Group2Id = Guid.Parse("95463135-09DA-420B-AC0F-63E0EDC6CA44");
+        public static readonly Guid Group3Id = Guid.Parse("BFD6A5CD-0C80-41E3-8A4A-AF90B9F0FF24");
+        public static readonly Guid Group4Id = Guid.Parse("a4b210ad-67cf-49a6-a87e-19f7a0083bbd");
+        public static readonly Guid Group5Id = Guid.Parse("f341fe9d-cbb5-42f9-bb9a-daccd07ca3d1");
+
+       
+
         protected override void Seed(PIMContext context)
         {
+
 
             Employee emp1, emp2, emp3, emp4, emp5;
 
             AddEmployees(context, out emp1, out emp2, out emp3, out emp4, out emp5);
 
-            Group group1, group2, group3, group4, group5;
+            
 
 
-            AddGroups(context, emp1, emp2, emp3, emp4, emp5, out group1, out group2, out group3, out group4, out group5);
+            AddGroups(context, emp1, emp2, emp3, emp4, emp5);
 
-            AddProjects(context, group1, group2, group3, group4, group5);
+            AddProjects(context);
 
 
             context.SaveChanges();
             base.Seed(context);
         }
 
-        private static void AddProjects(PIMContext context, Group group1, Group group2, Group group3, Group group4, Group group5)
+        private static void AddProjects(PIMContext context)
         {
             Project project1 = new Project
             {
-                GroupId = group1.ID,
+                GroupId = Group1Id,
                 ProjectNumber = 1111,
                 Name = "Moonshine",
                 Customer = "AnalytIQ",
@@ -44,7 +53,7 @@ namespace PIM.Infrastructure
             };
             Project project2 = new Project
             {
-                GroupId = group2.ID,
+                GroupId = Group2Id,
                 ProjectNumber = 1112,
                 Name = "Infinitly",
                 Customer = "Vantage",
@@ -54,7 +63,7 @@ namespace PIM.Infrastructure
             };
             Project project3 = new Project
             {
-                GroupId = group3.ID,
+                GroupId = Group3Id,
                 ProjectNumber = 1113,
                 Name = "Cyclone",
                 Customer = "Optiwise",
@@ -65,7 +74,7 @@ namespace PIM.Infrastructure
             };
             Project project4 = new Project
             {
-                GroupId = group3.ID,
+                GroupId = Group4Id,
                 ProjectNumber = 1114,
                 Name = "Motorry",
                 Customer = "CreamDeLaCar",
@@ -76,7 +85,7 @@ namespace PIM.Infrastructure
             };
             Project project5 = new Project
             {
-                GroupId = group5.ID,
+                GroupId = Group5Id,
                 ProjectNumber = 1115,
                 Name = "Collabbra",
                 Customer = "BluePeakLogic",
@@ -87,7 +96,7 @@ namespace PIM.Infrastructure
             };
             Project project6 = new Project
             {
-                GroupId = group4.ID,
+                GroupId = Group5Id,
                 ProjectNumber = 1116,
                 Name = "X Lab",
                 Customer = "VoxiDoxi",
@@ -98,7 +107,7 @@ namespace PIM.Infrastructure
             };
             Project project7 = new Project
             {
-                GroupId = group4.ID,
+                GroupId = Group4Id,
                 ProjectNumber = 1117,
                 Name = "GAVYL",
                 Customer = "ONEWill",
@@ -109,7 +118,7 @@ namespace PIM.Infrastructure
 
             Project project8 = new Project
             {
-                GroupId = group1.ID,
+                GroupId = Group4Id,
                 ProjectNumber = 1118,
                 Name = "SmartPave",
                 Customer = "Oak & Stone",
@@ -120,7 +129,7 @@ namespace PIM.Infrastructure
             };
             Project project9 = new Project
             {
-                GroupId = group4.ID,
+                GroupId = Group5Id,
                 ProjectNumber = 1119,
                 Name = "Qube",
                 Customer = "Paragon Construction",
@@ -132,7 +141,7 @@ namespace PIM.Infrastructure
             Project testProject = new Project
             {
                 ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
-                GroupId = group3.ID,
+                GroupId = Group3Id,
                 ProjectNumber = 1117,
                 Name = "Cybersify",
                 Customer = "MavernPoint",
@@ -140,35 +149,269 @@ namespace PIM.Infrastructure
                 StartDate = new DateTime(2016, 7, 15),
 
             };
+            Project project10 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11110,
+                Name = "Widget-Fix",
+                Customer = "Paragon Construction",
+                Status = Status.InProgress,
+                StartDate = new DateTime(2017, 12, 30),
+
+
+            };
+            Project project11 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11111,
+                Name = "Aurora",
+                Customer = "Roboville",
+                Status = Status.InProgress,
+                StartDate = new DateTime(2010, 1, 2),
+
+
+            };
+            Project project12 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11112,
+                Name = "Quadro",
+                Customer = "quickina",
+                Status = Status.InProgress,
+                StartDate = new DateTime(2008, 7, 26),
+
+
+            };
+            Project project13 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 1119,
+                Name = "Poseidon",
+                Customer = "Arizy",
+                Status = Status.InProgress,
+                StartDate = new DateTime(2000, 12, 31),
+
+
+            };
+        
+            Project project14 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11114,
+                Name = "Skyhawks",
+                Customer = "OpticRoute",
+                Status = Status.Finished,
+                StartDate = new DateTime(2016, 3, 20),
+
+
+            };
+            Project project15 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11115,
+                Name = "Sputnik",
+                Customer = "Aerotra",
+                Status = Status.Finished,
+                StartDate = new DateTime(2006, 1, 13),
+
+
+            };
+            Project project16 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11116,
+                Name = "Xena",
+                Customer = "Ascently",
+                Status = Status.Finished,
+                StartDate = new DateTime(2005, 12, 30),
+
+
+            };
+            Project project17 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11117,
+                Name = "Anacondas",
+                Customer = "Volantos",
+                Status = Status.Finished,
+                StartDate = new DateTime(2001, 5, 10),
+
+
+            };
+            Project project18 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11118,
+                Name = "Captivators",
+                Customer = "Uppyo",
+                Status = Status.Finished,
+                StartDate = new DateTime(2009, 2, 04),
+
+
+            };
+            Project project19 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11119,
+                Name = "Falcons",
+                Customer = "Munchups",
+                Status = Status.Finished,
+                StartDate = new DateTime(2017, 10, 30),
+
+
+            };
+            Project project20 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11120,
+                Name = "Gladiators",
+                Customer = "Blue Canyon",
+                Status = Status.Finished,
+                StartDate = new DateTime(2017, 12, 30),
+
+
+            };
+            Project project21 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11121,
+                Name = "Fleetworth",
+                Customer = "Birch and Forest",
+                Status = Status.New,
+                StartDate = new DateTime(2013, 10, 20),
+
+
+            };
+            Project project22 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11122,
+                Name = "Innovura",
+                Customer = "Paragon Construction",
+                Status = Status.New,
+                StartDate = new DateTime(2008, 11, 30),
+
+
+            };
+            Project project23 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11123,
+                Name = "Jovelet",
+                Customer = "Paragon Construction",
+                Status = Status.New,
+                StartDate = new DateTime(2006, 11, 30),
+
+
+            };
+            Project project24 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11124,
+                Name = "GrowthGround",
+                Customer = "AscendLink",
+                Status = Status.New,
+                StartDate = new DateTime(2003, 11, 30),
+
+
+            };
+            Project project25 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11125,
+                Name = "TrueGenix",
+                Customer = "Ascenteum",
+                Status = Status.New,
+                StartDate = new DateTime(2002, 11, 30),
+
+
+            };
+            Project project26 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11126,
+                Name = "Oaksted",
+                Customer = "AscendLink",
+                Status = Status.New,
+                StartDate = new DateTime(2015, 11, 30),
+
+
+            };
+            Project project27 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11127,
+                Name = "Qube",
+                Customer = "Ascenteum",
+                Status = Status.Planned,
+                StartDate = new DateTime(2014, 11, 30),
+
+
+            };
+            Project project28 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11128,
+                Name = "VRGuru",
+                Customer = "BioClix",
+                Status = Status.Planned,
+                StartDate = new DateTime(2011, 11, 30),
+
+
+            };
+            Project project29 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11129,
+                Name = "SkilledRite",
+                Customer = "Xpressible",
+                Status = Status.Planned,
+                StartDate = new DateTime(2019, 11, 30),
+
+
+            };
+            Project project30 = new Project
+            {
+                GroupId = Group5Id,
+                ProjectNumber = 11130,
+                Name = "Puralogy",
+                Customer = "Nestvia",
+                Status = Status.Planned,
+                StartDate = new DateTime(2018, 11, 30),
+
+
+            };
             context.Projects.AddRange(new List<Project> { project1, project2, project3, project4, project5, project6,
-                project7, project8, project9, testProject });
+                project7, project8, project9, testProject, project10, project11, project12, project13, project14, project15,
+                project16, project17, project18, project19, project20, project21, project22, project23, project24, project25,
+                project26, project27, project28, project29, project30 });
             context.SaveChanges();
         }
         private static void AddGroups(PIMContext context, Employee emp1, Employee emp2, Employee emp3, Employee emp4,
-            Employee emp5, out Group group1, out Group group2, out Group group3, out Group group4, out Group group5)
+            Employee emp5)
         {
-            group1 = new Group
+            Group group1 = new Group
             {
                 ID = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
                 GroupLeader = emp1
             };
 
-            group2 = new Group
+            Group group2 = new Group
             {
                 ID = Guid.Parse("95463135-09DA-420B-AC0F-63E0EDC6CA44"),
                 GroupLeader = emp2
             };
-            group3 = new Group
+            Group group3 = new Group
             {
                 ID = Guid.Parse("BFD6A5CD-0C80-41E3-8A4A-AF90B9F0FF24"),
                 GroupLeader = emp3
             };
-            group4 = new Group
+            Group group4 = new Group
             {
                 ID = Guid.Parse("a4b210ad-67cf-49a6-a87e-19f7a0083bbd"),
                 GroupLeader = emp4
             };
-            group5 = new Group
+            Group group5 = new Group
             {
                 ID = Guid.Parse("f341fe9d-cbb5-42f9-bb9a-daccd07ca3d1"),
                 GroupLeader = emp5

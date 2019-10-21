@@ -1,4 +1,5 @@
-﻿using PIM.Core;
+﻿using PagedList;
+using PIM.Core;
 using PIM.Core.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace PIM.Infrastructure.Services
                             Employee = validEmployee
                         });
                 }
-
+                
                 unitOfWork.Commit();
             }
         
@@ -140,7 +141,7 @@ namespace PIM.Infrastructure.Services
             }
         }
 
-        public IEnumerable<Project> Search(ProjectCriteria a)
+        public IPagedList<Project> Search(ProjectCriteria a)
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext())) {
                 var query = unitOfWork.Project.Get();
@@ -154,7 +155,7 @@ namespace PIM.Infrastructure.Services
                 {
                     query = query.Where(p => p.Status == a.Status);
                 }
-                return query.OrderBy(p => p.ProjectNumber).ToList();
+                return query.OrderBy(p => p.ProjectNumber).ToPagedList(a.Page, a.ItemsPerPage);
             }
         }
 

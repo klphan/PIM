@@ -1,5 +1,6 @@
 ﻿@model PIM.Web.Models.IndexPageViewModel
 @using PagedList.Mvc;
+@using PagedList;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
@@ -31,7 +32,8 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var project in Model.Projects) { 
+                @foreach (var project in Model.Projects)
+                {
                     <tr id="@project.ID">
                         @if (project.Status == PIM.Core.Status.New)
                         {
@@ -74,36 +76,46 @@ else
         </table>
         <input type="submit" class="delete-button" value="Delete selected item" onclick="return confirm('Are you sure?')" />
         <p id="countChecks">countCheck</p>
-        <br />
-       
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Confirm Delete</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete selected project?</p>
-                    </div>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-primary" id="btnDeleteYes" heref="#">Yes</button>
-
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            No
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        @Html.PagedListPager(Model.Projects, page => Url.Action("Index", new RouteValueDictionary{
+           { "ProjectCriteria.Status", Model.ProjectCriteria.Status },
+           { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+           { "ProjectCriteria.ItemsPerPage", Model.ProjectCriteria.ItemsPerPage },
+           { "ProjectCriteria.Page", page }
+        }))
     }
 
+    <br />
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Delete</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete selected project?</p>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" id="btnDeleteYes" heref="#">Yes</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        No
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 }
+
+
 @section scripts {
     @Scripts.Render("~/Scripts/projects.js")
 }

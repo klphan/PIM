@@ -1,5 +1,5 @@
 ﻿@model PIM.Web.Models.IndexPageViewModel
-@using (Html.BeginForm("Search", "Projects"))
+@using (Html.BeginForm("Index", "Projects", FormMethod.Get))
 {
     <div id="searchView">
         <span>@Html.TextBoxFor(p => p.ProjectCriteria.Text, new {size = 50, placeholder = "Project Number, Project Name or Customer Name", @class = "form-control" })</span>
