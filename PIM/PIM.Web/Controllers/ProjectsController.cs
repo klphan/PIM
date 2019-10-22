@@ -25,8 +25,18 @@ namespace PIM.Web.Controllers
         {
             projectService = new ProjectService();
             groupService = new GroupService();
-            // defaultGroupIds to avoid repetition calling groupId() and re-initialise viewModel
             defaultGroupIdsLeaders = groupService.GetGroup();
+        }
+
+        public ActionResult Index(ProjectCriteria projectCriteria)
+        {
+            IPagedList<Project> projects = projectService.Search(projectCriteria);
+            var searchView = new IndexPageViewModel
+            {
+                ProjectCriteria = projectCriteria,
+                Projects = projects
+            };
+            return View(searchView);
         }
         public ViewResult ProjectDetails(Guid? id)
         {
@@ -38,19 +48,12 @@ namespace PIM.Web.Controllers
                 };
                 return View("ProjectDetails", defaultViewModel);
             }
-            //Add a method to ProjectService to get project
             else
             {
-                var project = projectService.GetProject(id.Value);
-                List<string> empVisas = projectService.GetEmployees(id.Value);
-                String memberVisas = String.Join(", ", empVisas.ToArray());
-                // Test get direct list of employees from project
-                //ICollection<ProjectEmployee> employees = project.ProjectEmployees;
-
-                //
+                var project = projectService.GetProjectWithEmployees(id.Value);
+                String memberVisas = DisplayMembers(project);
                 var viewModel = new ProjectFormViewModel
                 {
-
                     Project = project,
                     EditMode = true,
                     Groups = defaultGroupIdsLeaders,
@@ -63,36 +66,16 @@ namespace PIM.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProjectFormViewModel viewModel)
         {
-            return CatchException(viewModel);//missing return cause bugs
+            return CatchException(viewModel);
         }
-        private static List<string> ParseEmployees(ProjectFormViewModel viewModel)
-        {
-            List<string> members = new List<string>();
-            if (viewModel.Members != null)
-            {
-                String[] separators = { ", ", ",", " ,", " " };
-                members = viewModel.Members.Split(separators, StringSplitOptions.None).ToList();
-            }
-            return members;
-        }
+       
         [HttpPost]
         public ActionResult Update(ProjectFormViewModel viewModel)
         {
             viewModel.EditMode = true;
             return CatchException(viewModel);
         }
-        public ActionResult Index(ProjectCriteria projectCriteria)
-        {
-            IPagedList<Project> projects = projectService.Search(projectCriteria);
-            var searchView = new IndexPageViewModel
-            {
-                ProjectCriteria = projectCriteria,
-                Projects = projects
-            };
-
-            return View(searchView);
-        }
-
+     
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
@@ -141,10 +124,8 @@ namespace PIM.Web.Controllers
                 }
 
             }
-            //Step2: Check for business logic, custom validation class from the server
             catch (BusinessException ex)
             {
-
                 errViewModel.Exception = ex;
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View("ProjectDetails", errViewModel);
@@ -156,6 +137,25 @@ namespace PIM.Web.Controllers
                 return View("ProjectDetails", errViewModel);
             }
             return RedirectToAction("Index", "Projects");
+        }
+        private static List<string> ParseEmployees(ProjectFormViewModel viewModel)
+        {
+            List<string> members = new List<string>();
+            if (viewModel.Members != null)
+            {
+                String[] separators = { ", ", ",", " ,", " " };
+                members = viewModel.Members.Split(separators, StringSplitOptions.None).ToList();
+            }
+            return members;
+        }
+        private static String DisplayMembers(Project project)
+        {
+            List<string> visas = new List<string>();
+            foreach (ProjectEmployee pe in project.ProjectEmployees)
+            {
+                visas.Add(pe.Employee.Visa);
+            }
+            return String.Join(", ", visas.ToArray());
         }
 
     }

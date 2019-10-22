@@ -42,19 +42,11 @@ namespace PIM.Core
       
         public byte[] Version { get; set; }
 
-        // navigation property to Group dbo
         public virtual Group Group { get; set; }
-        //navigation property for ProjectEmployee dbo
-
-        //public virtual ProjectEmployee ProjectEmployee { get; set; }
-        public ICollection<ProjectEmployee> ProjectEmployees { get; set; }
-
+        public virtual ICollection<ProjectEmployee> ProjectEmployees { get; set; }
         public Project()
         {
             ProjectEmployees = new Collection<ProjectEmployee>();
         }
-
     }
-
-    
 }
