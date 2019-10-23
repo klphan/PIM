@@ -16,8 +16,7 @@
 else
 {
 
-    using (Html.BeginForm("DeleteRange", "Projects", FormMethod.Post))
-    {
+   
 
         <table style="width:100%" id="customers" class="table table-bordered table-hover table-sm">
             <thead>
@@ -74,16 +73,22 @@ else
             </tbody>
 
         </table>
-        <input type="submit" class="delete-button" value="Delete selected item" onclick="return confirm('Are you sure?')" />
-        <p id="countChecks">countCheck</p>
+        <div id="deleteMultiple">
+            <button type="submit" id="delete-multiple-btn" value="Delete selected item">
+                <img src="~/Resources/trash-can.png" width="22" align="middle">
+            </button>
+            <p>delete selected items</p>
+        </div>
+
+        <p id="countChecks">No item selected</p>
 
         @Html.PagedListPager(Model.Projects, page => Url.Action("Index", new RouteValueDictionary{
-           { "ProjectCriteria.Status", Model.ProjectCriteria.Status },
+           { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
            { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
            { "ProjectCriteria.ItemsPerPage", Model.ProjectCriteria.ItemsPerPage },
            { "ProjectCriteria.Page", page }
         }))
-    }
+    
 
     <br />
 

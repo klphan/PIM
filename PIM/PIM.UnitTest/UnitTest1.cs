@@ -145,12 +145,7 @@ namespace PIM.UnitTest
             Assert.IsTrue(allGroups.Any());
         }
         [TestMethod]
-        public void TestGetEmployees()
-        {
-            ProjectService projectService = new ProjectService();
-            projectService.GetEmployees(Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"));
-
-        }
+        
     }
 }
 

@@ -31,7 +31,7 @@
             }
             else
             {
-                @Html.TextBoxFor(p => p.Project.ProjectNumber, new {style="width:100%", @class = "custom-form-control" })
+                @Html.TextBoxFor(p => p.Project.ProjectNumber, new { style = "width:100%", @class = "custom-form-control" })
 
             }
         </div>
@@ -67,20 +67,20 @@
             @Html.EnumDropDownListFor(p => p.Project.Status, "Select Status", new { @class = "custom-form-control" })
         </div>
     </div>
-    <div class ="form-group row" id="date">
+    <div class="form-group row" id="date">
 
-        
-            @Html.LabelFor(p => p.Project.StartDate, new { @class = "col-sm-2 col-form-label" })
-       
-        <div class="col-sm-3" >
-            @Html.TextBoxFor(p => p.Project.StartDate, "{0:dd/MM/yyyy}", new {style = "margin-left: 5px", @class = "custom-form-control"})
-        </div>
-        
-        <div class="col-sm-1"><br /></div>
-            @Html.LabelFor(p => p.Project.EndDate, new { @class = "col-form-label" })
-            
+
+        @Html.LabelFor(p => p.Project.StartDate, new { @class = "col-sm-2 col-form-label" })
+
         <div class="col-sm-3">
-            @Html.TextBoxFor(p => p.Project.EndDate, "{0:dd/MM/yyyy}", new { style="margin-left: 58px", @class = "custom-form-control"})
+            @Html.EditorFor(p => p.Project.StartDate, new { htmlAttributes = new { @class = "datepicker custom-form-control" } })
+        </div>
+
+        <div class="col-sm-1"><br /></div>
+        @Html.LabelFor(p => p.Project.EndDate, new { @class = "col-form-label" })
+
+        <div class="col-sm-3">
+            @Html.EditorFor(p => p.Project.EndDate, new { htmlAttributes = new { @class = "datepicker custom-form-control" } })
         </div>
     </div>
     <hr />
@@ -103,6 +103,25 @@
             else
             { <button type="submit" class="btn btn-primary">Create Project</button>}
         </div>
-        </div>
-        }
+    </div>
+}
+@section scripts{
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "dd-mm-yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-10:+10",
+                showOn: "both",
+                buttonText : "<i class='fa fa-calendar'></i>"
+                
+
+            });
+        })
+    </script>
+}
+
 
