@@ -119,3 +119,6 @@ li {
 .input-validation-error {
     border: 2px solid red;
 }
+#delete-multiple-btn {
+    cursor: pointer;
+}

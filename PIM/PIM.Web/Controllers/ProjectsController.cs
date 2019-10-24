@@ -84,7 +84,7 @@ namespace PIM.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteRange(List<Guid> projectIds)
+        public void DeleteRange(List<Guid> projectIds)
         {
             //name of parameter matching the name of checkbox in index.cshtml
             // because the submit delete button will pass the list of selected id into 
@@ -92,8 +92,8 @@ namespace PIM.Web.Controllers
            
 
             projectService.DeleteRange(projectIds);
-            bool result = true;
-            return Json(result, JsonRequestBehavior.AllowGet);
+            //bool result = true;
+            //return Json(result, JsonRequestBehavior.AllowGet);
             //return RedirectToAction("Index", "Projects");
             //return Json(new { msg = "Successfully deleted" });
         }

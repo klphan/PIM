@@ -1,16 +1,27 @@
 ﻿/// <reference path="jquery-ui-1.12.1.min.js" />
 
+//$("button.delete-btn").on("click", function (e) {
+//    e.preventDefault();
+//    var id = $(this).closest('tr').attr('id');
+//    $('#myModal').attr('data-target', id).modal('show');
+//});
 $("button.delete-btn").on("click", function (e) {
     e.preventDefault();
     var id = $(this).closest('tr').attr('id');
-    $('#myModal').attr('data-target', id).modal('show');
+    $('#myModal').attr('data-target', id);
+    $('#myModal').modal('show');
+    $('body').on("click", "#btnDeleteYes", function () {
+        var id = $('#myModal').attr('data-target');
+        $('#' + id).find('form').submit();
+        $('#myModal').modal('hide');
+    });
 });
 
-$('body').on("click", "#btnDeleteYes", function () {
-    var id = $('#myModal').attr('data-target');
-    $('#' + id).find('form').submit();
-    $('#myModal').modal('hide');
-});
+//$('body').on("click", "#btnDeleteYes", function () {
+//    var id = $('#myModal').attr('data-target');
+//    $('#' + id).find('form').submit();
+//    $('#myModal').modal('hide');
+//});
 
 
 
@@ -34,28 +45,40 @@ $(document).ready(function () {
     })
 });
 
-$(document).ready(function () {
-    $('#delete-multiple-btn').click(function () {
-        
-        var itemsToDelete = new Array();
-        $("input[name='projectIdsToDelete']:checked").each(function () {
-            itemsToDelete.push($(this).val());
-        })
-        var data = { projectIds: itemsToDelete };
-        var urldata = "/Projects/DeleteRange";
-        $.ajax({
-            type: "POST",
-            url: urldata,
-            data: data,
-            dataType: "json",
-            success: function () {
-                setTimeout(function () { location.reload(); }, 1000);
-            },
-            error: function () {
-                alert("Error loading data...");
-            }
-        });
+
+
+var ConfirmDeleteMultiple = function () {
+    if ($('input:checkbox:checked').length > 0) {
+        $('#btnDeleteYes').on("click", DeleteMultiple);
+        $('#myModal').modal('show');
+    }
+    else {
+
+    }
+}
+$('#delete-multiple-btn').on("click", ConfirmDeleteMultiple);
+
+var DeleteMultiple = function () {
+
+    var itemsToDelete = new Array();
+    $("input[name='projectIdsToDelete']:checked").each(function () {
+        itemsToDelete.push($(this).val());
+    })
+    var data = { projectIds: itemsToDelete };
+    var urldata = "/Projects/DeleteRange";
+    $.ajax({
+        type: "POST",
+        url: urldata,
+        data: data,
+        success: function () {
+             location.reload(true);
+        },
+        error: function () {
+            alert("Error loading data...");
+        }
     });
-});
+
+};
+
 
 
