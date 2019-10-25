@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\ProjectEmployee.cs" />
+    <Compile Include="Entities\SortDirection.cs" />
     <Compile Include="Entities\Status.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\InvalidProjectNumberException.cs" />

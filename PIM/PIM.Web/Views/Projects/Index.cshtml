@@ -16,77 +16,155 @@
 else
 {
 
-   
 
-        <table style="width:100%" id="customers" class="table table-bordered table-hover table-sm">
-            <thead>
-                <tr>
-                    <th style="width: 3%"></th>
-                    <th style="width: 5%">Number</th>
-                    <th style="width: 45%">Project Name</th>
-                    <th style="width: 10%">Status</th>
-                    <th style="width: 20%">Customer</th>
-                    <th style="width: 10%">Start Date</th>
-                    <th style="width: 7%">Delete</th>
+
+    <table style="width:100%" id="customers" class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th style="width: 3%"> </th>
+                <th style="width: 5%">
+                    @Html.ActionLink(
+                  linkText: "Number",
+                  actionName: "Index",
+                  controllerName: "Projects",
+                  routeValues:
+                  new RouteValueDictionary{
+                      { "ProjectCriteria.SortProperty", "ProjectNumber" },
+                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                      PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                      { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                      { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                  },
+                  htmlAttributes: null
+                  )
+                </th>
+                <th style="width: 45%">
+                    @Html.ActionLink(
+                   linkText: "Project Name",
+                   actionName: "Index",
+                   controllerName: "Projects",
+                   routeValues:
+                   new RouteValueDictionary{
+                       { "ProjectCriteria.SortProperty", "Name" },
+                       { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                       PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                       { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                       { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                   },
+                   htmlAttributes: null
+                   )
+                </th>
+                <th style="width: 10%"> 
+                   @Html.ActionLink(
+                   linkText: "Status",
+                   actionName: "Index",
+                   controllerName: "Projects",
+                   routeValues:
+                   new RouteValueDictionary{
+                       { "ProjectCriteria.SortProperty", "Status" },
+                       { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                       PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                       { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                       { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                   },
+                   htmlAttributes: null
+                   )
+                </th>
+                <th style="width: 20%">
+                  @Html.ActionLink(
+                  linkText: "Customer",
+                  actionName: "Index",
+                  controllerName: "Projects",
+                  routeValues:
+                  new RouteValueDictionary{
+                      { "ProjectCriteria.SortProperty", "Customer" },
+                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                      PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                      { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                      { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                  },
+                  htmlAttributes: null
+                  )
+                </th>
+                <th style="width: 10%">
+                    @Html.ActionLink(
+                  linkText: "Start Date",
+                  actionName: "Index",
+                  controllerName: "Projects",
+                  routeValues:
+                  new RouteValueDictionary{
+                      { "ProjectCriteria.SortProperty", "StartDate" },
+                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                      PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                      { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                      { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                  },
+                  htmlAttributes: null
+                  )
+                </th>
+                <th style="width: 7%">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model.Projects)
+            {
+                <tr id="@project.ID">
+                    @if (project.Status == PIM.Core.Status.New)
+                    {
+                        <td align="center"><input type="checkbox" name="projectIdsToDelete" id="projectIdsToDelete" value="@project.ID"> </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                    <td><a href="/Projects/ProjectDetails/@project.ID" id="@project.ID"> @project.ProjectNumber</a></td>
+                    <td>@project.Name</td>
+                    <td>@project.Status</td>
+                    <td>@project.Customer</td>
+                    <td input type="date">@project.StartDate.ToString("dd.MM.yyyy")</td>
+
+                    @if (project.Status == PIM.Core.Status.New)
+                    {
+                        <td align="center">
+                            @using (Html.BeginForm("Delete", "Projects", FormMethod.Post, new { id = "DeleteForm" }))
+                            {
+
+                                <input name="id" value="@project.ID" type="hidden" />
+
+                                <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" align="middle"></button>
+                            }
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var project in Model.Projects)
-                {
-                    <tr id="@project.ID">
-                        @if (project.Status == PIM.Core.Status.New)
-                        {
-                            <td align="center"><input type="checkbox" name="projectIdsToDelete" id="projectIdsToDelete" value="@project.ID"> </td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
 
-                        <td><a href="/Projects/ProjectDetails/@project.ID" id="@project.ID"> @project.ProjectNumber</a></td>
-                        <td>@project.Name</td>
-                        <td>@project.Status</td>
-                        <td>@project.Customer</td>
-                        <td input type="date">@project.StartDate.ToString("dd.MM.yyyy")</td>
+            }
+            <tr id="deleteMultiple">
+                <td colspan="7">
 
-                        @if (project.Status == PIM.Core.Status.New)
-                        {
-                            <td align="center">
-                                @using (Html.BeginForm("Delete", "Projects", FormMethod.Post, new { id = "DeleteForm" }))
-                                {
+                    <span id="countChecks"> No item selected</span>
+                    <span style="float:right; padding-right:19px">delete selected items <img src="~/Resources/trash-can.png" width="22" id="delete-multiple-btn" align="right"></span>
+                </td>
+            </tr>
+        </tbody>
 
-                                    <input name="id" value="@project.ID" type="hidden" />
+    </table>
 
-                                    <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" align="middle"></button>
-                                }
-                            </td>
+    @Html.PagedListPager(Model.Projects, page => Url.Action("Index", new RouteValueDictionary{
+       { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+       { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+       { "ProjectCriteria.SortProperty", Model.ProjectCriteria.SortProperty },
+       { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection  },
+       { "ProjectCriteria.ItemsPerPage", Model.ProjectCriteria.ItemsPerPage },
+       { "ProjectCriteria.Page", page },
+       
+    }))
 
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                    </tr>
-
-                }
-                <tr id="deleteMultiple">
-                    <td colspan="7">
-
-                        <span id="countChecks"> No item selected</span>
-                        <span style="float:right; padding-right:19px">delete selected items <img src="~/Resources/trash-can.png" width="22" id="delete-multiple-btn" align="right"></span>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-
-        @Html.PagedListPager(Model.Projects, page => Url.Action("Index", new RouteValueDictionary{
-           { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
-           { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
-           { "ProjectCriteria.ItemsPerPage", Model.ProjectCriteria.ItemsPerPage },
-           { "ProjectCriteria.Page", page }
-        }))
-    
 
     <br />
 

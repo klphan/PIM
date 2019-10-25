@@ -38,6 +38,9 @@ namespace PIM.Web.Controllers
             };
             return View(searchView);
         }
+
+        
+
         public ViewResult ProjectDetails(Guid? id)
         {
             if (!id.HasValue)

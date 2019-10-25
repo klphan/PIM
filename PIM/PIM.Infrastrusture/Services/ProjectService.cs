@@ -84,7 +84,8 @@ namespace PIM.Infrastructure.Services
 
         public IPagedList<Project> Search(ProjectCriteria a)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext())) {
+            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            {
                 var query = unitOfWork.Project.Get();
                 if (!string.IsNullOrEmpty(a.Text))
                 {
@@ -96,10 +97,64 @@ namespace PIM.Infrastructure.Services
                 {
                     query = query.Where(p => p.Status == a.Status);
                 }
-                return query.OrderBy(p => p.ProjectNumber).ToPagedList(a.Page, a.ItemsPerPage);
+                if (!string.IsNullOrEmpty(a.SortProperty))
+                {
+                    switch (a.SortDirection)
+                    {
+                        case SortDirection.Ascending:
+                            switch (a.SortProperty)
+                            {
+                                case "ProjectNumber":
+                                    query = query.OrderBy(p => p.ProjectNumber);
+                                    break;
+                                case "Name":
+                                    query = query.OrderBy(p => p.Name);
+                                    break;
+                                case "Customer":
+                                    query = query.OrderBy(p => p.Customer);
+                                    break;
+                                case "StartDate":
+                                    query = query.OrderBy(p => p.StartDate);
+                                    break;
+                                case "Status":
+                                    query = query.OrderBy(p => p.Status);
+                                    break;
+                            }
+                            break;
+
+                        case SortDirection.Descending:
+                            switch (a.SortProperty)
+                            {
+                                case "ProjectNumber":
+                                    query = query.OrderByDescending(p => p.ProjectNumber);
+                                    break;
+                                case "Name":
+                                    query = query.OrderByDescending(p => p.Name);
+                                    break;
+                                case "Customer":
+                                    query = query.OrderByDescending(p => p.Customer);
+                                    break;
+                                case "StartDate":
+                                    query = query.OrderByDescending(p => p.StartDate);
+                                    break;
+                                case "Status":
+                                    query = query.OrderByDescending(p => p.Status);
+                                    break;
+                            }
+                            break;
+                        default:
+
+                            break;
+                    }
+                }
+                if (string.IsNullOrEmpty(a.SortProperty))
+                {
+                    query = query.OrderBy(p => p.ProjectNumber);
+                }
+                return query.ToPagedList(a.Page, a.ItemsPerPage);
             }
         }
-
+     
         public void Delete(Guid id)
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
