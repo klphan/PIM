@@ -22,7 +22,7 @@ else
         <thead>
             <tr>
                 <th style="width: 3%"> </th>
-                <th style="width: 5%">
+                <th style="width: 10%">
                     @Html.ActionLink(
                   linkText: "Number",
                   actionName: "Index",
@@ -37,8 +37,20 @@ else
                   },
                   htmlAttributes: null
                   )
+                    @if (Model.ProjectCriteria.SortProperty == "ProjectNumber")
+
+                    {
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-top"></span>
+                        }
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        }
+                    }
                 </th>
-                <th style="width: 45%">
+                <th style="width: 40%">
                     @Html.ActionLink(
                    linkText: "Project Name",
                    actionName: "Index",
@@ -53,38 +65,74 @@ else
                    },
                    htmlAttributes: null
                    )
+                    @if (Model.ProjectCriteria.SortProperty == "Name")
+
+                    {
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-top"></span>
+                        }
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        }
+                    }
                 </th>
-                <th style="width: 10%"> 
-                   @Html.ActionLink(
-                   linkText: "Status",
-                   actionName: "Index",
-                   controllerName: "Projects",
-                   routeValues:
-                   new RouteValueDictionary{
-                       { "ProjectCriteria.SortProperty", "Status" },
-                       { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                       PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
-                       { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
-                       { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
-                   },
-                   htmlAttributes: null
-                   )
+                <th style="width: 10%">
+                    @Html.ActionLink(
+                    linkText: "Status",
+                    actionName: "Index",
+                    controllerName: "Projects",
+                    routeValues:
+                    new RouteValueDictionary{
+                        { "ProjectCriteria.SortProperty", "Status" },
+                        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                        PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                        { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                        { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                    },
+                    htmlAttributes: null
+                    )
+                    @if (Model.ProjectCriteria.SortProperty == "Status")
+
+                    {
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-top"></span>
+                        }
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        }
+                    }
                 </th>
                 <th style="width: 20%">
-                  @Html.ActionLink(
-                  linkText: "Customer",
-                  actionName: "Index",
-                  controllerName: "Projects",
-                  routeValues:
-                  new RouteValueDictionary{
-                      { "ProjectCriteria.SortProperty", "Customer" },
-                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                      PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
-                      { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
-                      { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
-                  },
-                  htmlAttributes: null
-                  )
+                    @Html.ActionLink(
+                    linkText: "Customer",
+                    actionName: "Index",
+                    controllerName: "Projects",
+                    routeValues:
+                    new RouteValueDictionary{
+                        { "ProjectCriteria.SortProperty", "Customer" },
+                        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
+                        PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                        { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
+                        { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
+                    },
+                    htmlAttributes: null
+                    )
+                    @if (Model.ProjectCriteria.SortProperty == "Customer")
+
+                    {
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-top"></span>
+                        }
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        }
+                    }
                 </th>
                 <th style="width: 10%">
                     @Html.ActionLink(
@@ -101,6 +149,18 @@ else
                   },
                   htmlAttributes: null
                   )
+                    @if (Model.ProjectCriteria.SortProperty == "StartDate")
+
+                    {
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-top"></span>
+                        }
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        {
+                            <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        }
+                    }
                 </th>
                 <th style="width: 7%">Delete</th>
             </tr>
@@ -135,14 +195,12 @@ else
                                 <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" align="middle"></button>
                             }
                         </td>
-
                     }
                     else
                     {
                         <td></td>
                     }
                 </tr>
-
             }
             <tr id="deleteMultiple">
                 <td colspan="7">
@@ -162,7 +220,7 @@ else
        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection  },
        { "ProjectCriteria.ItemsPerPage", Model.ProjectCriteria.ItemsPerPage },
        { "ProjectCriteria.Page", page },
-       
+
     }))
 
 

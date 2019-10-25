@@ -122,3 +122,6 @@ li {
 #delete-multiple-btn {
     cursor: pointer;
 }
+.glyphicon {
+    float: right;
+}

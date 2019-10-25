@@ -38,9 +38,6 @@ namespace PIM.Web.Controllers
             };
             return View(searchView);
         }
-
-        
-
         public ViewResult ProjectDetails(Guid? id)
         {
             if (!id.HasValue)
@@ -65,7 +62,6 @@ namespace PIM.Web.Controllers
                 return View("ProjectDetails", viewModel);
             }
         }
-        
         [HttpPost]
         public ActionResult Create(ProjectFormViewModel viewModel)
         {
