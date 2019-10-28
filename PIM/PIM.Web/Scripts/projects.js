@@ -17,12 +17,6 @@ $("button.delete-btn").on("click", function (e) {
     });
 });
 
-//$('body').on("click", "#btnDeleteYes", function () {
-//    var id = $('#myModal').attr('data-target');
-//    $('#' + id).find('form').submit();
-//    $('#myModal').modal('hide');
-//});
-
 
 
 $(document).ready(function () {

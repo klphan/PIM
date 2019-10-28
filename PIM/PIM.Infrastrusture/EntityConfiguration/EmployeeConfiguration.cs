@@ -30,6 +30,9 @@ namespace PIM.Infrastructure.EntityConfiguration
             Property(e => e.BirthDay)
                 .IsRequired();
 
+            Property(e => e.Version)
+                .IsConcurrencyToken();
+
         }
     }
 }

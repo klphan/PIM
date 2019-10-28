@@ -17,11 +17,7 @@ namespace PIM.Infrastructure.EntityConfiguration
 
             Property(p => p.ProjectNumber)
                 .IsRequired();
-                
 
-            
-
-            //Foreign key to Group
             //Indepedent Association so use the Map method
 
             HasRequired(p => p.Group)
@@ -29,12 +25,9 @@ namespace PIM.Infrastructure.EntityConfiguration
             // HasForeignKey only works with WithMany() relationship
             .WithMany(g => g.Projects)
             .HasForeignKey(g => g.GroupId);
-            //.WillCascadeOnDelete(false);
-            // .WithOptional(g => g.Project)
-            // .Map(p => p.MapKey("GroupId"));
 
-            
-
+            Property(p => p.Version)
+                .IsConcurrencyToken();
        
         }
 

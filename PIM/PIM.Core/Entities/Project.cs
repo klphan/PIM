@@ -42,6 +42,7 @@ namespace PIM.Core
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
       
+        [Timestamp]
         public byte[] Version { get; set; }
 
         public virtual Group Group { get; set; }

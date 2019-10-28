@@ -4,6 +4,7 @@ using PIM.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,13 +41,24 @@ namespace PIM.Infrastructure.Services
                 IList<Employee> validEmployees = ValidateMembers(members, unitOfWork);
                 var selected = unitOfWork.Project.Get();
                 var selectedProject = selected.FirstOrDefault(p => p.ID == a.ID);
+                if (selectedProject == null)
+                {
+                    throw new ProjectHasBeenDeletedException("The project you are trying to edit has been deleted by another user." +
+                        "Please click cancel to return to project list");
+                }
+                // assign a rowVersion to Project a then carry out the update
+                // after updating if the rowversion match then allow updating
+                if (!(a.Version.SequenceEqual(selectedProject.Version)))
+                {
+                    throw new DbUpdateConcurrencyException("The project you are trying to update has been modified by another user. Please return to the Project List and try again");
+                }
+
                 selectedProject.Customer = a.Customer;
                 selectedProject.GroupId = a.GroupId;
                 selectedProject.Name = a.Name;
                 selectedProject.StartDate = a.StartDate;
                 selectedProject.EndDate = a.EndDate;
                 selectedProject.Status = a.Status;
-
                 //Get the Collection of the ProjectEmployee associated with this project
                 var exProjectEmployees = unitOfWork.ProjectEmployee.Get()
                     .Where(pe => pe.ProjectId == selectedProject.ID)
@@ -68,15 +80,18 @@ namespace PIM.Infrastructure.Services
                     };
                     selectedProject.ProjectEmployees.Add(newProjectEmployeeRecord);
                 }
+
                 unitOfWork.Commit();
+
             }
         }
         public Project GetProjectWithEmployees(Guid id)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext())) {
+            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            {
                 var project = unitOfWork.Project.Get()
                     .Include(p => p.ProjectEmployees.Select(x => x.Employee))
-                    .Where(p => p.ID == id )
+                    .Where(p => p.ID == id)
                     .FirstOrDefault();
                 return project;
             }
@@ -154,12 +169,19 @@ namespace PIM.Infrastructure.Services
                 return query.ToPagedList(a.Page, a.ItemsPerPage);
             }
         }
-     
+
         public void Delete(Guid id)
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
             {
-                unitOfWork.Project.Remove(id);
+
+                var projectToDelete = unitOfWork.Project.Get().FirstOrDefault(p => p.ID == id);
+                if (projectToDelete == null)
+                {
+                    return;
+                }
+
+                unitOfWork.Project.Remove(projectToDelete.ID);
                 var filtered = unitOfWork.ProjectEmployee.Get().Where(pe => pe.ProjectId == id).ToList();
                 foreach (ProjectEmployee exProjectEmployee in filtered)
                 {

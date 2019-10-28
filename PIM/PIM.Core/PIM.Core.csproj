@@ -49,6 +49,7 @@
     <Compile Include="Exceptions\InvalidProjectNumberException.cs" />
     <Compile Include="Exceptions\InvalidEndDateException.cs" />
     <Compile Include="Exceptions\InvalidVisaException.cs" />
+    <Compile Include="Exceptions\ProjectHasBeenDeletedException.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Entities\Project.cs" />

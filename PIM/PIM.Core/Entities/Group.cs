@@ -13,6 +13,7 @@ namespace PIM.Core
         public virtual Employee GroupLeader { get; set; }
         // Navigation property for Project
         public Project Project { get; set; }
+        [Timestamp]
         public byte[] Version { get; set; }
         public ICollection<Project> Projects { get; set; }
     }

@@ -19,7 +19,7 @@ namespace PIM.Core
         public string LastName { get; set; }
 
         public DateTime BirthDay { get; set; }
-
+        [Timestamp]
         public byte[] Version { get; set; }
 
         //navigation property for Group

@@ -20,8 +20,9 @@ namespace PIM.Infrastructure.EntityConfiguration
                 .WithOptional(e => e.IsGroupLeader)
                 .Map(a => a.MapKey("GroupLeaderId"));
 
-                //.HasForeignKey(g => g.GroupLeaderId); 
-            
+            //.HasForeignKey(g => g.GroupLeaderId); 
+            Property(g => g.Version)
+                .IsConcurrencyToken();
         }
     }
 }
