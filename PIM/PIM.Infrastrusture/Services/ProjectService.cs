@@ -13,7 +13,7 @@ namespace PIM.Infrastructure.Services
 {
     public class ProjectService
     {
-        public void Create(Project a, List<string> members)
+        public void Create(Project a, IEnumerable<string> members)
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
             {
@@ -33,14 +33,15 @@ namespace PIM.Infrastructure.Services
                 unitOfWork.Commit();
             }
         }
-        public void Update(Project a, List<string> members)
+        public void Update(Project a, IEnumerable<string> members)
         {
             using (var unitOfWork = new UnitOfWork(new PIMContext()))
             {
                 Validate(a, unitOfWork, editMode: true);
                 IList<Employee> validEmployees = ValidateMembers(members, unitOfWork);
-                var selected = unitOfWork.Project.Get();
-                var selectedProject = selected.FirstOrDefault(p => p.ID == a.ID);
+                var selectedProject = unitOfWork.Project.Get()
+                   .Where(p => p.ID == a.ID)
+                   .FirstOrDefault();
                 if (selectedProject == null)
                 {
                     throw new ProjectHasBeenDeletedException("The project you are trying to edit has been deleted by another user." +
@@ -59,17 +60,13 @@ namespace PIM.Infrastructure.Services
                 selectedProject.StartDate = a.StartDate;
                 selectedProject.EndDate = a.EndDate;
                 selectedProject.Status = a.Status;
-                //Get the Collection of the ProjectEmployee associated with this project
-                var exProjectEmployees = unitOfWork.ProjectEmployee.Get()
-                    .Where(pe => pe.ProjectId == selectedProject.ID)
-                    .ToList();
-
+              
+                var exProjectEmployees = selectedProject.ProjectEmployees.ToList();// missing ToList() will not allow enumeration
                 //delete all the exRecords
                 foreach (ProjectEmployee pe in exProjectEmployees)
                 {
-                    unitOfWork.ProjectEmployee.Remove(pe.ID);
+                    selectedProject.ProjectEmployees.Remove(pe);
                 }
-
                 // add new all records
                 foreach (Employee validEmployee in validEmployees)
                 {
@@ -114,54 +111,51 @@ namespace PIM.Infrastructure.Services
                 }
                 if (!string.IsNullOrEmpty(a.SortProperty))
                 {
-                    switch (a.SortDirection)
+                    if (a.SortDirection == SortDirection.Ascending)
                     {
-                        case SortDirection.Ascending:
-                            switch (a.SortProperty)
-                            {
-                                case "ProjectNumber":
-                                    query = query.OrderBy(p => p.ProjectNumber);
-                                    break;
-                                case "Name":
-                                    query = query.OrderBy(p => p.Name);
-                                    break;
-                                case "Customer":
-                                    query = query.OrderBy(p => p.Customer);
-                                    break;
-                                case "StartDate":
-                                    query = query.OrderBy(p => p.StartDate);
-                                    break;
-                                case "Status":
-                                    query = query.OrderBy(p => p.Status);
-                                    break;
-                            }
-                            break;
-
-                        case SortDirection.Descending:
-                            switch (a.SortProperty)
-                            {
-                                case "ProjectNumber":
-                                    query = query.OrderByDescending(p => p.ProjectNumber);
-                                    break;
-                                case "Name":
-                                    query = query.OrderByDescending(p => p.Name);
-                                    break;
-                                case "Customer":
-                                    query = query.OrderByDescending(p => p.Customer);
-                                    break;
-                                case "StartDate":
-                                    query = query.OrderByDescending(p => p.StartDate);
-                                    break;
-                                case "Status":
-                                    query = query.OrderByDescending(p => p.Status);
-                                    break;
-                            }
-                            break;
-                        default:
-
-                            break;
+                        switch (a.SortProperty)
+                        {
+                            case "ProjectNumber":
+                                query = query.OrderBy(p => p.ProjectNumber);
+                                break;
+                            case "Name":
+                                query = query.OrderBy(p => p.Name);
+                                break;
+                            case "Customer":
+                                query = query.OrderBy(p => p.Customer);
+                                break;
+                            case "StartDate":
+                                query = query.OrderBy(p => p.StartDate);
+                                break;
+                            case "Status":
+                                query = query.OrderBy(p => p.Status);
+                                break;
+                        }
                     }
+                    if (a.SortDirection == SortDirection.Descending)
+                    {
+                        switch (a.SortProperty)
+                        {
+                            case "ProjectNumber":
+                                query = query.OrderByDescending(p => p.ProjectNumber);
+                                break;
+                            case "Name":
+                                query = query.OrderByDescending(p => p.Name);
+                                break;
+                            case "Customer":
+                                query = query.OrderByDescending(p => p.Customer);
+                                break;
+                            case "StartDate":
+                                query = query.OrderByDescending(p => p.StartDate);
+                                break;
+                            case "Status":
+                                query = query.OrderByDescending(p => p.Status);
+                                break;
+                        }
+                    }
+
                 }
+
                 if (string.IsNullOrEmpty(a.SortProperty))
                 {
                     query = query.OrderBy(p => p.ProjectNumber);
@@ -169,6 +163,7 @@ namespace PIM.Infrastructure.Services
                 return query.ToPagedList(a.Page, a.ItemsPerPage);
             }
         }
+
 
         public void Delete(Guid id)
         {
@@ -198,7 +193,6 @@ namespace PIM.Infrastructure.Services
                 Delete(id);
             }
         }
-
         private void Validate(Project a, UnitOfWork unitOfWork, bool editMode)
         {
             if (editMode == false)

@@ -17,9 +17,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-</head>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    </head>
 
 <body>
     <div class="container-fluid">
@@ -36,9 +37,12 @@
             </div>
             <div id="column2" class="col-md-10">
                 @RenderBody()
+               
             </div>
         </div>
     </div>
+    
 </body>
 @RenderSection("scripts", false)
+
 </html>

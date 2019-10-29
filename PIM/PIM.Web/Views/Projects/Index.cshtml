@@ -1,6 +1,5 @@
 ﻿@model PIM.Web.Models.IndexPageViewModel
 @using PagedList.Mvc;
-@using PagedList;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
@@ -253,7 +252,6 @@ else
         </div>
     </div>
 }
-
 
 @section scripts {
     @Scripts.Render("~/Scripts/projects.js")

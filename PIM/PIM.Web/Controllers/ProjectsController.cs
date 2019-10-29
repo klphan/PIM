@@ -19,13 +19,13 @@ namespace PIM.Web.Controllers
         // GET: Projects
         private GroupService groupService;
         private ProjectService projectService;
-        private IEnumerable<Group> defaultGroupIdsLeaders;
+        private EmployeeService employeeService;
 
         public ProjectsController()
         {
             projectService = new ProjectService();
             groupService = new GroupService();
-            defaultGroupIdsLeaders = groupService.GetGroup();
+            employeeService = new EmployeeService();
         }
 
         public ActionResult Index(ProjectCriteria projectCriteria)
@@ -38,26 +38,31 @@ namespace PIM.Web.Controllers
             };
             return View(searchView);
         }
+
         public ViewResult ProjectDetails(Guid? id)
         {
             if (!id.HasValue)
             {
                 var defaultViewModel = new ProjectFormViewModel
                 {
-                    Groups = defaultGroupIdsLeaders
+                    Groups = groupService.GetGroup(),
+                    EmployeesList = GetAllEmployeesNames(employeeService.GetEmployee())
+
                 };
                 return View("ProjectDetails", defaultViewModel);
             }
             else
             {
                 var project = projectService.GetProjectWithEmployees(id.Value);
-                String memberVisas = DisplayMembers(project);
+                IEnumerable<string> visas = DisplayMembers(project);
                 var viewModel = new ProjectFormViewModel
                 {
                     Project = project,
                     EditMode = true,
-                    Groups = defaultGroupIdsLeaders,
-                    Members = memberVisas
+                    Groups = groupService.GetGroup(),
+                    EmployeesList = GetAllEmployeesNames(employeeService.GetEmployee()),
+                    Members = visas
+                    
                 };
                 return View("ProjectDetails", viewModel);
             }
@@ -67,7 +72,6 @@ namespace PIM.Web.Controllers
         {
             return CatchException(viewModel);
         }
-       
         [HttpPost]
         public ActionResult Update(ProjectFormViewModel viewModel)
         {
@@ -85,16 +89,7 @@ namespace PIM.Web.Controllers
         [HttpPost]
         public void DeleteRange(List<Guid> projectIds)
         {
-            //name of parameter matching the name of checkbox in index.cshtml
-            // because the submit delete button will pass the list of selected id into 
-            // this argument by default
-           
-
             projectService.DeleteRange(projectIds);
-            //bool result = true;
-            //return Json(result, JsonRequestBehavior.AllowGet);
-            //return RedirectToAction("Index", "Projects");
-            //return Json(new { msg = "Successfully deleted" });
         }
         private ActionResult CatchException(ProjectFormViewModel viewModel)
         {
@@ -105,27 +100,26 @@ namespace PIM.Web.Controllers
 
             var errViewModel = new ProjectFormViewModel
             {
-                //groupIds of viewModel is currently empty so must set back to default
-                Groups = defaultGroupIdsLeaders,
+                Groups = groupService.GetGroup(),
                 Project = viewModel.Project,
                 Members = viewModel.Members,
-                EditMode = viewModel.EditMode
+                EditMode = viewModel.EditMode,
+                EmployeesList = GetAllEmployeesNames(employeeService.GetEmployee())
             };
             //Step1: Check for data annotation attribute client side validation
             if (!ModelState.IsValid)
             {
                 return View("ProjectDetails", errViewModel);
             }
-            List<string> members = ParseEmployees(viewModel);
             try
             {
                 if (viewModel.EditMode)
                 {
-                    projectService.Update(viewModel.Project, members);
+                    projectService.Update(viewModel.Project, viewModel.Members);
                 }
                 else
                 {
-                    projectService.Create(viewModel.Project, members);
+                    projectService.Create(viewModel.Project, viewModel.Members);
                 }
 
             }
@@ -143,25 +137,25 @@ namespace PIM.Web.Controllers
             }
             return RedirectToAction("Index", "Projects");
         }
-        private static List<string> ParseEmployees(ProjectFormViewModel viewModel)
-        {
-            List<string> members = new List<string>();
-            if (viewModel.Members != null)
-            {
-                String[] separators = { ", ", ",", " ,", " " };
-                members = viewModel.Members.Split(separators, StringSplitOptions.None).ToList();
-            }
-            return members;
-        }
-        private static String DisplayMembers(Project project)
+      
+        private IEnumerable<string> DisplayMembers(Project project)
         {
             List<string> visas = new List<string>();
             foreach (ProjectEmployee pe in project.ProjectEmployees)
             {
                 visas.Add(pe.Employee.Visa);
             }
-            return String.Join(", ", visas.ToArray());
+            return visas;
         }
-
+        private List<SelectListItem> GetAllEmployeesNames(IEnumerable<Employee> employeesFromDB)
+        {
+            List<SelectListItem> employeesList = new List<SelectListItem>();
+            foreach (var emp in employeesFromDB)
+            {
+                employeesList.Add(new SelectListItem 
+                { Text = emp.Visa + ": " + emp.LastName + " " + emp.FirstName, Value = emp.Visa });
+            }
+            return employeesList;
+        }
     }
 }

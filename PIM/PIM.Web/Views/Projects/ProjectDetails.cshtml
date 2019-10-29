@@ -58,7 +58,12 @@
 
         @Html.LabelFor(p => p.Members, new { @class = "col-sm-2 col-form-label" })
         <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Members, new { @class = "custom-form-control" })
+            @Html.ListBoxFor(p => p.Members, Model.EmployeesList, new
+            {
+                @align = "left",
+                @class = "custom-form-control chosen-select",
+                @title = "Select Multiple Options",
+            })
         </div>
     </div>
     <div class="form-group row">
@@ -88,6 +93,7 @@
         @Html.HiddenFor(p => p.Project.ID)
         @Html.HiddenFor(p => p.Project.Version)
 
+
     </div>
     <div id="projects-btn" class="row">
         <div class="col-sm-5"><br /></div>
@@ -106,23 +112,28 @@
         </div>
     </div>
 }
-@section scripts{
 
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+@section scripts {
+
     <script>
-        $(function () {
+        $(document).ready(function () {
             $(".datepicker").datepicker({
                 dateFormat: "dd.mm.yy",
                 changeMonth: true,
                 changeYear: true,
                 yearRange: "-10:+10",
                 showOn: "both",
-                buttonText : "<i class='fa fa-calendar'></i>"
-                
-
+                buttonText: "<i class='fa fa-calendar'></i>"
             });
         })
+
+
+        $(".chosen-select").chosen();
+
+
     </script>
+
 }
+
 
 

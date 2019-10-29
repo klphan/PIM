@@ -1,10 +1,17 @@
 ﻿/// <reference path="jquery-ui-1.12.1.min.js" />
 
-//$("button.delete-btn").on("click", function (e) {
-//    e.preventDefault();
-//    var id = $(this).closest('tr').attr('id');
-//    $('#myModal').attr('data-target', id).modal('show');
-//});
+
+$(document).ready(function() {
+    $(".datepicker").datepicker({
+        dateFormat: "dd.mm.yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-10:+10",
+        showOn: "both",
+        buttonText: "<i class='fa fa-calendar'></i>"
+    });
+})
+
 $("button.delete-btn").on("click", function (e) {
     e.preventDefault();
     var id = $(this).closest('tr').attr('id');
@@ -65,7 +72,7 @@ var DeleteMultiple = function () {
         url: urldata,
         data: data,
         success: function () {
-             location.reload(true);
+            location.reload(true);
         },
         error: function () {
             alert("Error loading data...");
