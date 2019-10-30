@@ -59,5 +59,23 @@ namespace PIM.Web.Tests {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Project_Information_Management {
+            get {
+                return ResourceManager.GetString("Project Information Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Project_List {
+            get {
+                return ResourceManager.GetString("Project List", resourceCulture);
+            }
+        }
     }
 }

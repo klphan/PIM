@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PIM.Infrastructure.Services
 {
@@ -60,12 +58,12 @@ namespace PIM.Infrastructure.Services
                 selectedProject.StartDate = a.StartDate;
                 selectedProject.EndDate = a.EndDate;
                 selectedProject.Status = a.Status;
-              
+
                 var exProjectEmployees = selectedProject.ProjectEmployees.ToList();// missing ToList() will not allow enumeration
                 //delete all the exRecords
                 foreach (ProjectEmployee pe in exProjectEmployees)
                 {
-                    selectedProject.ProjectEmployees.Remove(pe);
+                    selectedProject.ProjectEmployees.Remove(pe);//can also unitOfWork.ProjectEmployees.Remove(pe);
                 }
                 // add new all records
                 foreach (Employee validEmployee in validEmployees)
@@ -109,61 +107,11 @@ namespace PIM.Infrastructure.Services
                 {
                     query = query.Where(p => p.Status == a.Status);
                 }
-                if (!string.IsNullOrEmpty(a.SortProperty))
-                {
-                    if (a.SortDirection == SortDirection.Ascending)
-                    {
-                        switch (a.SortProperty)
-                        {
-                            case "ProjectNumber":
-                                query = query.OrderBy(p => p.ProjectNumber);
-                                break;
-                            case "Name":
-                                query = query.OrderBy(p => p.Name);
-                                break;
-                            case "Customer":
-                                query = query.OrderBy(p => p.Customer);
-                                break;
-                            case "StartDate":
-                                query = query.OrderBy(p => p.StartDate);
-                                break;
-                            case "Status":
-                                query = query.OrderBy(p => p.Status);
-                                break;
-                        }
-                    }
-                    if (a.SortDirection == SortDirection.Descending)
-                    {
-                        switch (a.SortProperty)
-                        {
-                            case "ProjectNumber":
-                                query = query.OrderByDescending(p => p.ProjectNumber);
-                                break;
-                            case "Name":
-                                query = query.OrderByDescending(p => p.Name);
-                                break;
-                            case "Customer":
-                                query = query.OrderByDescending(p => p.Customer);
-                                break;
-                            case "StartDate":
-                                query = query.OrderByDescending(p => p.StartDate);
-                                break;
-                            case "Status":
-                                query = query.OrderByDescending(p => p.Status);
-                                break;
-                        }
-                    }
-
-                }
-
-                if (string.IsNullOrEmpty(a.SortProperty))
-                {
-                    query = query.OrderBy(p => p.ProjectNumber);
-                }
-                return query.ToPagedList(a.Page, a.ItemsPerPage);
+                    bool descending = (a.SortDirection == SortDirection.Descending);
+                    query = GetSortedData(query, a.SortProperty, descending);
+                    return query.ToPagedList(a.Page, a.ItemsPerPage);
             }
         }
-
 
         public void Delete(Guid id)
         {
@@ -238,6 +186,23 @@ namespace PIM.Infrastructure.Services
                 throw new InvalidVisaException(message);
             }
             return validVisa;
+        }
+        private IQueryable<Project> GetSortedData(IQueryable<Project> query, String orderby, bool desc)
+        {
+            switch (orderby)
+            {
+                case "ProjectNumber":
+                    return query.OrderBy(p => p.ProjectNumber, desc);
+                case "Name":
+                    return query.OrderBy(p => p.Name, desc);
+                case "Customer":
+                    return query.OrderBy(p => p.Customer, desc);
+                case "StartDate":
+                    return query.OrderBy(p => p.StartDate, desc);
+                case "Status":
+                    return query.OrderBy(p => p.Status, desc);
+                default: return query.OrderBy(p => p.ProjectNumber);
+            }
         }
     }
 }

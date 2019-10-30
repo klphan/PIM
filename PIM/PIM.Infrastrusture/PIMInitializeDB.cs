@@ -21,20 +21,10 @@ namespace PIM.Infrastructure
 
         protected override void Seed(PIMContext context)
         {
-
-
             Employee emp1, emp2, emp3, emp4, emp5;
-
             AddEmployees(context, out emp1, out emp2, out emp3, out emp4, out emp5);
-
-            
-
-
             AddGroups(context, emp1, emp2, emp3, emp4, emp5);
-
             AddProjects(context);
-
-
             context.SaveChanges();
             base.Seed(context);
         }
@@ -142,7 +132,7 @@ namespace PIM.Infrastructure
             {
                 ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
                 GroupId = Group3Id,
-                ProjectNumber = 1117,
+                ProjectNumber = 1127,
                 Name = "Cybersify",
                 Customer = "MavernPoint",
                 Status = Status.InProgress,

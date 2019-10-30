@@ -121,7 +121,6 @@ namespace PIM.Web.Controllers
                 {
                     projectService.Create(viewModel.Project, viewModel.Members);
                 }
-
             }
             catch (BusinessException ex)
             {
