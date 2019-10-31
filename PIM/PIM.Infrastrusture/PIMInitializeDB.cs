@@ -1,15 +1,11 @@
-﻿using PIM.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PIM.Core;
+using PIM.Core.Entities;
 
 namespace PIM.Infrastructure
 {
-    public class PIMInitializeDB : DropCreateDatabaseAlways<PIMContext>
+    public class PimInitializeDb : DropCreateDatabaseAlways<PimContext>
     {
         public static readonly Guid Group1Id = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE");
         public static readonly Guid Group2Id = Guid.Parse("95463135-09DA-420B-AC0F-63E0EDC6CA44");
@@ -17,9 +13,7 @@ namespace PIM.Infrastructure
         public static readonly Guid Group4Id = Guid.Parse("a4b210ad-67cf-49a6-a87e-19f7a0083bbd");
         public static readonly Guid Group5Id = Guid.Parse("f341fe9d-cbb5-42f9-bb9a-daccd07ca3d1");
 
-       
-
-        protected override void Seed(PIMContext context)
+        protected override void Seed(PimContext context)
         {
             Employee emp1, emp2, emp3, emp4, emp5;
             AddEmployees(context, out emp1, out emp2, out emp3, out emp4, out emp5);
@@ -28,8 +22,7 @@ namespace PIM.Infrastructure
             context.SaveChanges();
             base.Seed(context);
         }
-
-        private static void AddProjects(PIMContext context)
+        private static void AddProjects(PimContext context)
         {
             Project project1 = new Project
             {
@@ -130,7 +123,7 @@ namespace PIM.Infrastructure
             };
             Project testProject = new Project
             {
-                ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
+                Id = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
                 GroupId = Group3Id,
                 ProjectNumber = 1127,
                 Name = "Cybersify",
@@ -159,7 +152,6 @@ namespace PIM.Infrastructure
                 Status = Status.InProgress,
                 StartDate = new DateTime(2010, 1, 2),
 
-
             };
             Project project12 = new Project
             {
@@ -170,7 +162,6 @@ namespace PIM.Infrastructure
                 Status = Status.InProgress,
                 StartDate = new DateTime(2008, 7, 26),
 
-
             };
             Project project13 = new Project
             {
@@ -180,7 +171,6 @@ namespace PIM.Infrastructure
                 Customer = "Arizy",
                 Status = Status.InProgress,
                 StartDate = new DateTime(2000, 12, 31),
-
 
             };
         
@@ -193,7 +183,6 @@ namespace PIM.Infrastructure
                 Status = Status.Finished,
                 StartDate = new DateTime(2016, 3, 20),
 
-
             };
             Project project15 = new Project
             {
@@ -203,7 +192,6 @@ namespace PIM.Infrastructure
                 Customer = "Aerotra",
                 Status = Status.Finished,
                 StartDate = new DateTime(2006, 1, 13),
-
 
             };
             Project project16 = new Project
@@ -215,7 +203,6 @@ namespace PIM.Infrastructure
                 Status = Status.Finished,
                 StartDate = new DateTime(2005, 12, 30),
 
-
             };
             Project project17 = new Project
             {
@@ -225,7 +212,6 @@ namespace PIM.Infrastructure
                 Customer = "Volantos",
                 Status = Status.Finished,
                 StartDate = new DateTime(2001, 5, 10),
-
 
             };
             Project project18 = new Project
@@ -237,7 +223,6 @@ namespace PIM.Infrastructure
                 Status = Status.Finished,
                 StartDate = new DateTime(2009, 2, 04),
 
-
             };
             Project project19 = new Project
             {
@@ -247,7 +232,6 @@ namespace PIM.Infrastructure
                 Customer = "Munchups",
                 Status = Status.Finished,
                 StartDate = new DateTime(2017, 10, 30),
-
 
             };
             Project project20 = new Project
@@ -259,7 +243,6 @@ namespace PIM.Infrastructure
                 Status = Status.Finished,
                 StartDate = new DateTime(2017, 12, 30),
 
-
             };
             Project project21 = new Project
             {
@@ -269,7 +252,6 @@ namespace PIM.Infrastructure
                 Customer = "Birch and Forest",
                 Status = Status.New,
                 StartDate = new DateTime(2013, 10, 20),
-
 
             };
             Project project22 = new Project
@@ -281,7 +263,6 @@ namespace PIM.Infrastructure
                 Status = Status.New,
                 StartDate = new DateTime(2008, 11, 30),
 
-
             };
             Project project23 = new Project
             {
@@ -291,7 +272,6 @@ namespace PIM.Infrastructure
                 Customer = "Paragon Construction",
                 Status = Status.New,
                 StartDate = new DateTime(2006, 11, 30),
-
 
             };
             Project project24 = new Project
@@ -377,40 +357,40 @@ namespace PIM.Infrastructure
                 project26, project27, project28, project29, project30 });
             context.SaveChanges();
         }
-        private static void AddGroups(PIMContext context, Employee emp1, Employee emp2, Employee emp3, Employee emp4,
+        private static void AddGroups(PimContext context, Employee emp1, Employee emp2, Employee emp3, Employee emp4,
             Employee emp5)
         {
             Group group1 = new Group
             {
-                ID = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
+                Id = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
                 GroupLeader = emp1
             };
 
             Group group2 = new Group
             {
-                ID = Guid.Parse("95463135-09DA-420B-AC0F-63E0EDC6CA44"),
+                Id = Guid.Parse("95463135-09DA-420B-AC0F-63E0EDC6CA44"),
                 GroupLeader = emp2
             };
             Group group3 = new Group
             {
-                ID = Guid.Parse("BFD6A5CD-0C80-41E3-8A4A-AF90B9F0FF24"),
+                Id = Guid.Parse("BFD6A5CD-0C80-41E3-8A4A-AF90B9F0FF24"),
                 GroupLeader = emp3
             };
             Group group4 = new Group
             {
-                ID = Guid.Parse("a4b210ad-67cf-49a6-a87e-19f7a0083bbd"),
+                Id = Guid.Parse("a4b210ad-67cf-49a6-a87e-19f7a0083bbd"),
                 GroupLeader = emp4
             };
             Group group5 = new Group
             {
-                ID = Guid.Parse("f341fe9d-cbb5-42f9-bb9a-daccd07ca3d1"),
+                Id = Guid.Parse("f341fe9d-cbb5-42f9-bb9a-daccd07ca3d1"),
                 GroupLeader = emp5
             };
 
             context.Groups.AddRange(new List<Group> { group1, group2, group3, group4, group5 });
             context.SaveChanges();
         }
-        private static void AddEmployees(PIMContext context, out Employee emp1, out Employee emp2, out Employee emp3,
+        private static void AddEmployees(PimContext context, out Employee emp1, out Employee emp2, out Employee emp3,
             out Employee emp4, out Employee emp5)
         {
             emp1 = new Employee

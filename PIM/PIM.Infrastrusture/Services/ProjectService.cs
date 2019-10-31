@@ -1,11 +1,11 @@
 ﻿using PagedList;
-using PIM.Core;
 using PIM.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using PIM.Core.Entities;
 
 namespace PIM.Infrastructure.Services
 {
@@ -13,7 +13,7 @@ namespace PIM.Infrastructure.Services
     {
         public void Create(Project a, IEnumerable<string> members)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
                 Validate(a, unitOfWork, editMode: false);
                 IList<Employee> validEmployees = ValidateMembers(members, unitOfWork);
@@ -33,20 +33,20 @@ namespace PIM.Infrastructure.Services
         }
         public void Update(Project a, IEnumerable<string> members)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
                 Validate(a, unitOfWork, editMode: true);
                 IList<Employee> validEmployees = ValidateMembers(members, unitOfWork);
-                var selectedProject = unitOfWork.Project.Get()
-                   .Where(p => p.ID == a.ID)
-                   .FirstOrDefault();
+                var selectedProject = unitOfWork.Project
+                   .Get()
+                   .FirstOrDefault(p => p.Id == a.Id);
                 if (selectedProject == null)
                 {
                     throw new ProjectHasBeenDeletedException("The project you are trying to edit has been deleted by another user." +
                         "Please click cancel to return to project list");
                 }
                 // assign a rowVersion to Project a then carry out the update
-                // after updating if the rowversion match then allow updating
+                // after updating if the rowVersion match then allow updating
                 if (!(a.Version.SequenceEqual(selectedProject.Version)))
                 {
                     throw new DbUpdateConcurrencyException("The project you are trying to update has been modified by another user. Please return to the Project List and try again");
@@ -70,31 +70,28 @@ namespace PIM.Infrastructure.Services
                 {
                     var newProjectEmployeeRecord = new ProjectEmployee
                     {
-                        ProjectId = selectedProject.ID,
-                        EmployeeId = validEmployee.ID
+                        ProjectId = selectedProject.Id,
+                        EmployeeId = validEmployee.Id
                     };
                     selectedProject.ProjectEmployees.Add(newProjectEmployeeRecord);
                 }
-
                 unitOfWork.Commit();
-
             }
         }
         public Project GetProjectWithEmployees(Guid id)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
                 var project = unitOfWork.Project.Get()
                     .Include(p => p.ProjectEmployees.Select(x => x.Employee))
-                    .Where(p => p.ID == id)
+                    .Where(p => p.Id == id)
                     .FirstOrDefault();
                 return project;
             }
         }
-
         public IPagedList<Project> Search(ProjectCriteria a)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
                 var query = unitOfWork.Project.Get();
                 if (!string.IsNullOrEmpty(a.Text))
@@ -115,20 +112,20 @@ namespace PIM.Infrastructure.Services
 
         public void Delete(Guid id)
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
 
-                var projectToDelete = unitOfWork.Project.Get().FirstOrDefault(p => p.ID == id);
+                var projectToDelete = unitOfWork.Project.Get().FirstOrDefault(p => p.Id == id);
                 if (projectToDelete == null)
                 {
                     return;
                 }
 
-                unitOfWork.Project.Remove(projectToDelete.ID);
+                unitOfWork.Project.Remove(projectToDelete.Id);
                 var filtered = unitOfWork.ProjectEmployee.Get().Where(pe => pe.ProjectId == id).ToList();
                 foreach (ProjectEmployee exProjectEmployee in filtered)
                 {
-                    unitOfWork.ProjectEmployee.Remove(exProjectEmployee.ID);
+                    unitOfWork.ProjectEmployee.Remove(exProjectEmployee.Id);
                 }
                 unitOfWork.Commit();
             }

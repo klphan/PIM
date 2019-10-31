@@ -1,18 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PIM.Core;
 using PIM.Core.Exceptions;
 using PIM.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PIM.Core.Entities;
 
 namespace PIM.UnitTest
 {
     [TestClass]
     public class UnitTest1
     {
-
-        ProjectService service = new ProjectService();
+        readonly ProjectService _service = new ProjectService();
         [TestMethod]
         public void TestAddValidProject()
         {
@@ -26,8 +25,8 @@ namespace PIM.UnitTest
                 StartDate = new DateTime(2016, 7, 15),
                 EndDate = new DateTime(2017, 7, 15)
             };
-            service.Create(validProject, new List<string> { "aa1", "aa2", "aa3" });
-            var result = service.Search(new ProjectCriteria{Text = "projectname4"});
+            _service.Create(validProject, new List<string> { "aa1", "aa2", "aa3" });
+            var result = _service.Search(new ProjectCriteria{Text = "projectname4"});
             Assert.IsNotNull(result);
 
         }
@@ -46,10 +45,10 @@ namespace PIM.UnitTest
                 EndDate = new DateTime(2017, 7, 15)
             };
 
-            service.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" });
+            _service.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" });
             //(createProjectService.Create(validProject, new List<string>()));
             Assert.ThrowsException<InvalidProjectNumberException>(() =>
-            service.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" }));
+            _service.Create(invalidProject, new List<string> { "aa1", "aa2", "aa3" }));
         }
 
         [TestMethod]
@@ -67,7 +66,7 @@ namespace PIM.UnitTest
             };
 
             Assert.ThrowsException<InvalidEndDateException>(() =>
-           service.Create(invalidEndDate, new List<string> { "aa1", "aa2", "aa3" }));
+           _service.Create(invalidEndDate, new List<string> { "aa1", "aa2", "aa3" }));
         }
 
         [TestMethod]
@@ -75,23 +74,23 @@ namespace PIM.UnitTest
         {
             // search by text && status match
             ProjectCriteria textStatus = new ProjectCriteria { Text = "c3", Status = Status.Finished };
-            IEnumerable<Project> textStatusList = service.Search(textStatus);
+            IEnumerable<Project> textStatusList = _service.Search(textStatus);
             Assert.IsTrue(textStatusList.Any());
             // search by text && status => expect empty list mismatch text status
             ProjectCriteria invalidTextStatus = new ProjectCriteria { Text = "c3", Status = Status.New };
-            IEnumerable<Project> invalidTextStatusList = service.Search(invalidTextStatus);
+            IEnumerable<Project> invalidTextStatusList = _service.Search(invalidTextStatus);
             Assert.IsTrue(!invalidTextStatusList.Any());
             //search by text
             ProjectCriteria textOnly = new ProjectCriteria { Text = "c3" };
-            IEnumerable<Project> textOnlyList = service.Search(textOnly);
+            IEnumerable<Project> textOnlyList = _service.Search(textOnly);
             Assert.IsTrue(textOnlyList.Any());
             //search by status
             ProjectCriteria status = new ProjectCriteria { Status = Status.New };
-            IEnumerable<Project> statusList = service.Search(status);
+            IEnumerable<Project> statusList = _service.Search(status);
             Assert.IsTrue(statusList.Any());
             //empty criteria
             ProjectCriteria noCriteria = new ProjectCriteria();
-            IEnumerable<Project> noCriteriaList = service.Search(noCriteria);
+            IEnumerable<Project> noCriteriaList = _service.Search(noCriteria);
             Assert.IsTrue(noCriteriaList.Any());
 
         }
@@ -103,7 +102,7 @@ namespace PIM.UnitTest
             Project toUpdateProject = new Project
             {
                 GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
-                ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
+                Id = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
                 ProjectNumber = 1117,
                 Name = "updated",
                 Customer = "updatedCustomer",
@@ -111,8 +110,8 @@ namespace PIM.UnitTest
                 StartDate = new DateTime(2016, 7, 15),
                 EndDate = new DateTime(2016, 10, 15)
             };
-            service.Update(toUpdateProject, new List<string> { "aa1", "aa2", "aa3"});
-            var foundUpdated = service.Search(new ProjectCriteria { Text = "updated" });
+            _service.Update(toUpdateProject, new List<string> { "aa1", "aa2", "aa3"});
+            var foundUpdated = _service.Search(new ProjectCriteria { Text = "updated" });
             Assert.IsTrue(foundUpdated.Any());
         }
 
@@ -123,7 +122,7 @@ namespace PIM.UnitTest
             {
                 //Delete project with matching ID but different info
                 GroupId = Guid.Parse("793243BB-B9E2-4208-AF12-36E4491A2EEE"),
-                ID = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
+                Id = Guid.Parse("7571520C-8DAD-4417-A233-07B9A328694B"),
                 ProjectNumber = 1117,
                 Name = "updated",
                 Customer = "updatedCustomer",
@@ -132,8 +131,8 @@ namespace PIM.UnitTest
                 EndDate = new DateTime(2016, 10, 15)
             };
 
-            service.Delete(toDeleteProject.ID);
-            var foundDeleted = service.Search(new ProjectCriteria { Text = "updated" });
+            _service.Delete(toDeleteProject.Id);
+            var foundDeleted = _service.Search(new ProjectCriteria { Text = "updated" });
             Assert.IsTrue(!foundDeleted.Any());
         }
         [TestMethod]
@@ -144,8 +143,6 @@ namespace PIM.UnitTest
             
             Assert.IsTrue(allGroups.Any());
         }
-        [TestMethod]
-        
     }
 }
 

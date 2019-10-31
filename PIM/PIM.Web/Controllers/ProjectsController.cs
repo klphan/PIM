@@ -1,36 +1,37 @@
-﻿using PIM.Infrastructure;
-using PIM.Web.Models;
+﻿using PIM.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using PIM.Core;
-using System.Data.Entity;
 using PIM.Infrastructure.Services;
 using PIM.Core.Exceptions;
 using PagedList;
-using PagedList.Mvc;
+using System.Threading;
+using System.Globalization;
+using PIM.Core.Entities;
 
 namespace PIM.Web.Controllers
 {
     public class ProjectsController : Controller
     {
         // GET: Projects
-        private GroupService groupService;
-        private ProjectService projectService;
-        private EmployeeService employeeService;
+        private GroupService _groupService;
+        private ProjectService _projectService;
+        private EmployeeService _employeeService;
+
 
         public ProjectsController()
         {
-            projectService = new ProjectService();
-            groupService = new GroupService();
-            employeeService = new EmployeeService();
+            _projectService = new ProjectService();
+            _groupService = new GroupService();
+            _employeeService = new EmployeeService();
         }
+
 
         public ActionResult Index(ProjectCriteria projectCriteria)
         {
-            IPagedList<Project> projects = projectService.Search(projectCriteria);
+            
+
+            IPagedList<Project> projects = _projectService.Search(projectCriteria);
             var searchView = new IndexPageViewModel
             {
                 ProjectCriteria = projectCriteria,
@@ -41,56 +42,59 @@ namespace PIM.Web.Controllers
 
         public ViewResult ProjectDetails(Guid? id)
         {
+
             if (!id.HasValue)
             {
                 var defaultViewModel = new ProjectFormViewModel
                 {
-                    Groups = groupService.GetGroup(),
-                    EmployeesList = GetAllEmployeesNames(employeeService.GetEmployee())
-
+                    Groups = _groupService.GetGroup(),
+                    EmployeesList = GetAllEmployeesNames(_employeeService.GetEmployee())
                 };
                 return View("ProjectDetails", defaultViewModel);
             }
             else
             {
-                var project = projectService.GetProjectWithEmployees(id.Value);
+                var project = _projectService.GetProjectWithEmployees(id.Value);
                 IEnumerable<string> visas = DisplayMembers(project);
                 var viewModel = new ProjectFormViewModel
                 {
                     Project = project,
                     EditMode = true,
-                    Groups = groupService.GetGroup(),
-                    EmployeesList = GetAllEmployeesNames(employeeService.GetEmployee()),
+                    Groups = _groupService.GetGroup(),
+                    EmployeesList = GetAllEmployeesNames(_employeeService.GetEmployee()),
                     Members = visas
-                    
+
                 };
                 return View("ProjectDetails", viewModel);
             }
         }
+
         [HttpPost]
         public ActionResult Create(ProjectFormViewModel viewModel)
         {
             return CatchException(viewModel);
         }
+
         [HttpPost]
         public ActionResult Update(ProjectFormViewModel viewModel)
         {
             viewModel.EditMode = true;
             return CatchException(viewModel);
         }
-     
+
         [HttpPost]
         public ActionResult Delete(Guid id)
         {
-            projectService.Delete(id);
+            _projectService.Delete(id);
             return RedirectToAction("Index", "Projects");
         }
 
         [HttpPost]
         public void DeleteRange(List<Guid> projectIds)
         {
-            projectService.DeleteRange(projectIds);
+            _projectService.DeleteRange(projectIds);
         }
+
         private ActionResult CatchException(ProjectFormViewModel viewModel)
         {
             if (!viewModel.EditMode)
@@ -100,26 +104,27 @@ namespace PIM.Web.Controllers
 
             var errViewModel = new ProjectFormViewModel
             {
-                Groups = groupService.GetGroup(),
+                Groups = _groupService.GetGroup(),
                 Project = viewModel.Project,
                 Members = viewModel.Members,
                 EditMode = viewModel.EditMode,
-                EmployeesList = GetAllEmployeesNames(employeeService.GetEmployee())
+                EmployeesList = GetAllEmployeesNames(_employeeService.GetEmployee())
             };
             //Step1: Check for data annotation attribute client side validation
             if (!ModelState.IsValid)
             {
                 return View("ProjectDetails", errViewModel);
             }
+
             try
             {
                 if (viewModel.EditMode)
                 {
-                    projectService.Update(viewModel.Project, viewModel.Members);
+                    _projectService.Update(viewModel.Project, viewModel.Members);
                 }
                 else
                 {
-                    projectService.Create(viewModel.Project, viewModel.Members);
+                    _projectService.Create(viewModel.Project, viewModel.Members);
                 }
             }
             catch (BusinessException ex)
@@ -134,9 +139,10 @@ namespace PIM.Web.Controllers
                 errViewModel.Exception = ex;
                 return View("ProjectDetails", errViewModel);
             }
+
             return RedirectToAction("Index", "Projects");
         }
-      
+
         private IEnumerable<string> DisplayMembers(Project project)
         {
             List<string> visas = new List<string>();
@@ -146,13 +152,14 @@ namespace PIM.Web.Controllers
             }
             return visas;
         }
-        private List<SelectListItem> GetAllEmployeesNames(IEnumerable<Employee> employeesFromDB)
+
+        private static List<SelectListItem> GetAllEmployeesNames(IEnumerable<Employee> employeesFromDb)
         {
             List<SelectListItem> employeesList = new List<SelectListItem>();
-            foreach (var emp in employeesFromDB)
+            foreach (var emp in employeesFromDb)
             {
-                employeesList.Add(new SelectListItem 
-                { Text = emp.Visa + ": " + emp.LastName + " " + emp.FirstName, Value = emp.Visa });
+                employeesList.Add(new SelectListItem
+                    {Text = emp.Visa + @": " + emp.LastName + @" " + emp.FirstName, Value = emp.Visa});
             }
             return employeesList;
         }

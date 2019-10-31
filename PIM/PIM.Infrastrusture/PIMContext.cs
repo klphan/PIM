@@ -1,15 +1,15 @@
 ﻿using System.Data.Entity;
-using PIM.Core;
+using PIM.Core.Entities;
 using PIM.Infrastructure.EntityConfiguration;
 
 namespace PIM.Infrastructure
 {
-    public class PIMContext : DbContext
+    public class PimContext : DbContext
     {
-        public PIMContext()
+        public PimContext()
             : base("name=PIMContextConnectionString")
         {
-           Database.SetInitializer<PIMContext>(new PIMInitializeDB());
+           Database.SetInitializer(new PimInitializeDb());
            
         }
         public DbSet<Project> Projects { get; set; }

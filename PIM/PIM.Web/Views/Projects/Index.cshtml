@@ -1,16 +1,17 @@
 ﻿@model PIM.Web.Models.IndexPageViewModel
 @using PagedList.Mvc;
+@using PIM.Core.Entities
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
 
-<h4>Projects List</h4>
+<h4>@PIM.Web.Resources.Resource.ProjectList</h4>
 
 @Html.Partial("_SearchView")
 @if (!Model.Projects.Any())
 {
-    <p>We don't have any projects yet</p>
+<p>@PIM.Web.Resources.Resource.NoProjectMessage</p>
 }
 else
 {
@@ -23,14 +24,14 @@ else
                 <th style="width: 3%"> </th>
                 <th style="width: 10%">
                     @Html.ActionLink(
-                  linkText: "Number",
+                  linkText: @PIM.Web.Resources.Resource.Number,
                   actionName: "Index",
                   controllerName: "Projects",
                   routeValues:
                   new RouteValueDictionary{
                       { "ProjectCriteria.SortProperty", "ProjectNumber" },
-                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                      PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending ?
+                      PIM.Core.Entities.SortDirection.Descending : PIM.Core.Entities.SortDirection.Ascending  },
                       { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
                       { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
                   },
@@ -39,11 +40,11 @@ else
                     @if (Model.ProjectCriteria.SortProperty == "ProjectNumber")
 
                     {
-                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending)
                         {
                             <span class="glyphicon glyphicon-triangle-top"></span>
                         }
-                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Descending)
                         {
                             <span class="glyphicon glyphicon-triangle-bottom"></span>
                         }
@@ -51,14 +52,14 @@ else
                 </th>
                 <th style="width: 40%">
                     @Html.ActionLink(
-                   linkText: "Project Name",
+                   linkText: @PIM.Web.Resources.Resource.ProjectName,
                    actionName: "Index",
                    controllerName: "Projects",
                    routeValues:
                    new RouteValueDictionary{
                        { "ProjectCriteria.SortProperty", "Name" },
-                       { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                       PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                       { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending ?
+                       PIM.Core.Entities.SortDirection.Descending : PIM.Core.Entities.SortDirection.Ascending  },
                        { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
                        { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
                    },
@@ -67,11 +68,11 @@ else
                     @if (Model.ProjectCriteria.SortProperty == "Name")
 
                     {
-                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending)
                         {
                             <span class="glyphicon glyphicon-triangle-top"></span>
                         }
-                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Descending)
                         {
                             <span class="glyphicon glyphicon-triangle-bottom"></span>
                         }
@@ -79,14 +80,14 @@ else
                 </th>
                 <th style="width: 10%">
                     @Html.ActionLink(
-                    linkText: "Status",
+                    linkText: @PIM.Web.Resources.Resource.Status,
                     actionName: "Index",
                     controllerName: "Projects",
                     routeValues:
                     new RouteValueDictionary{
                         { "ProjectCriteria.SortProperty", "Status" },
-                        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                        PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending ?
+                        PIM.Core.Entities.SortDirection.Descending : PIM.Core.Entities.SortDirection.Ascending  },
                         { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
                         { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
                     },
@@ -95,11 +96,11 @@ else
                     @if (Model.ProjectCriteria.SortProperty == "Status")
 
                     {
-                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending)
                         {
                             <span class="glyphicon glyphicon-triangle-top"></span>
                         }
-                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Descending)
                         {
                             <span class="glyphicon glyphicon-triangle-bottom"></span>
                         }
@@ -107,14 +108,14 @@ else
                 </th>
                 <th style="width: 20%">
                     @Html.ActionLink(
-                    linkText: "Customer",
+                    linkText: @PIM.Web.Resources.Resource.Customer,
                     actionName: "Index",
                     controllerName: "Projects",
                     routeValues:
                     new RouteValueDictionary{
                         { "ProjectCriteria.SortProperty", "Customer" },
-                        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                        PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                        { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending ?
+                        PIM.Core.Entities.SortDirection.Descending : PIM.Core.Entities.SortDirection.Ascending  },
                         { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
                         { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
                     },
@@ -123,11 +124,11 @@ else
                     @if (Model.ProjectCriteria.SortProperty == "Customer")
 
                     {
-                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending)
                         {
                             <span class="glyphicon glyphicon-triangle-top"></span>
                         }
-                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Descending)
                         {
                             <span class="glyphicon glyphicon-triangle-bottom"></span>
                         }
@@ -135,14 +136,14 @@ else
                 </th>
                 <th style="width: 10%">
                     @Html.ActionLink(
-                  linkText: "Start Date",
+                  linkText: @PIM.Web.Resources.Resource.StartDate,
                   actionName: "Index",
                   controllerName: "Projects",
                   routeValues:
                   new RouteValueDictionary{
                       { "ProjectCriteria.SortProperty", "StartDate" },
-                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending ?
-                      PIM.Core.SortDirection.Descending : PIM.Core.SortDirection.Ascending  },
+                      { "ProjectCriteria.SortDirection", Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending ?
+                      PIM.Core.Entities.SortDirection.Descending : PIM.Core.Entities.SortDirection.Ascending  },
                       { "ProjectCriteria.Status", (int?)Model.ProjectCriteria.Status },
                       { "ProjectCriteria.Text", Model.ProjectCriteria.Text },
                   },
@@ -151,11 +152,11 @@ else
                     @if (Model.ProjectCriteria.SortProperty == "StartDate")
 
                     {
-                        if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Ascending)
+                        if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Ascending)
                         {
                             <span class="glyphicon glyphicon-triangle-top"></span>
                         }
-                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.SortDirection.Descending)
+                        else if (Model.ProjectCriteria.SortDirection == PIM.Core.Entities.SortDirection.Descending)
                         {
                             <span class="glyphicon glyphicon-triangle-bottom"></span>
                         }
@@ -167,31 +168,31 @@ else
         <tbody>
             @foreach (var project in Model.Projects)
             {
-                <tr id="@project.ID">
-                    @if (project.Status == PIM.Core.Status.New)
+                <tr id="@project.Id">
+                    @if (project.Status == Status.New)
                     {
-                        <td align="center"><input type="checkbox" name="projectIdsToDelete" id="projectIdsToDelete" value="@project.ID"> </td>
+                        <td class="align-center"><input type="checkbox" name="projectIdsToDelete" id="projectIdsToDelete" value="@project.Id"> </td>
                     }
                     else
                     {
                         <td></td>
                     }
-
-                    <td><a href="/Projects/ProjectDetails/@project.ID" id="@project.ID"> @project.ProjectNumber</a></td>
+                    
+                    <td><a href="Projects/ProjectDetails/@project.Id" id="@project.Id"> @project.ProjectNumber</a></td>
                     <td>@project.Name</td>
                     <td>@project.Status</td>
                     <td>@project.Customer</td>
                     <td input type="date">@project.StartDate.ToString("dd.MM.yyyy")</td>
 
-                    @if (project.Status == PIM.Core.Status.New)
+                    @if (project.Status == Status.New)
                     {
-                        <td align="center">
+                        <td class="align-center">
                             @using (Html.BeginForm("Delete", "Projects", FormMethod.Post, new { id = "DeleteForm" }))
                             {
 
-                                <input name="id" value="@project.ID" type="hidden" />
+                                <input name="id" value="@project.Id" type="hidden" />
 
-                                <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" align="middle"></button>
+                                <button class="delete-btn"><img src="~/Resources/trash-can.png" width="22" class="align-center"></button>
                             }
                         </td>
                     }
@@ -204,8 +205,8 @@ else
             <tr id="deleteMultiple">
                 <td colspan="7">
 
-                    <span id="countChecks"> No item selected</span>
-                    <span style="float:right; padding-right:19px">delete selected items <img src="~/Resources/trash-can.png" width="22" id="delete-multiple-btn" align="right"></span>
+                    <span id="countChecks"> @PIM.Web.Resources.Resource.No_item_selected</span>
+                    <span style="float:right; padding-right:19px">@PIM.Web.Resources.Resource.delete_selected_item <img src="~/Resources/trash-can.png" width="22" id="delete-multiple-btn" class="align-center"></span>
                 </td>
             </tr>
         </tbody>
@@ -221,11 +222,7 @@ else
        { "ProjectCriteria.Page", page },
 
     }))
-
-
     <br />
-
-
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -233,18 +230,18 @@ else
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Confirm Delete</h4>
+                    <h4 class="modal-title">@PIM.Web.Resources.Resource.ConfirmDelete</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete selected project?</p>
+                    <p>@PIM.Web.Resources.Resource.delete_modal_body</p>
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary" id="btnDeleteYes" heref="#">Yes</button>
+                    <button type="button" class="btn btn-primary" id="btnDeleteYes" heref="#">@PIM.Web.Resources.Resource.Yes</button>
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        No
+                        @PIM.Web.Resources.Resource.No
                     </button>
                 </div>
             </div>

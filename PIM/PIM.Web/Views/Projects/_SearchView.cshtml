@@ -2,11 +2,11 @@
 @using (Html.BeginForm("Index", "Projects", FormMethod.Get))
 {
     <div id="searchView">
-        <span>@Html.TextBoxFor(p => p.ProjectCriteria.Text, new { size = 50, placeholder = "Project Number, Project Name or Customer Name", @class = "form-control" })</span>
+        <span>@Html.TextBoxFor(p => p.ProjectCriteria.Text, new { size = 50, placeholder = @PIM.Web.Resources.Resource.SearchTextBox, @class = "form-control" })</span>
 
-        <span>@Html.EnumDropDownListFor(p => p.ProjectCriteria.Status, "Select Status", new { @class = "form-control" })</span>
+        <span>@Html.EnumDropDownListFor(p => p.ProjectCriteria.Status, @PIM.Web.Resources.Resource.SelectStatus, new { @class = "form-control" })</span>
 
-        <span><button type="submit" class="btn btn-primary custom-btn">Search Project</button></span>
-        <span>@Html.ActionLink("Reset Search", "Index", "Projects", null, new { @class = "btn btn-primary custom-btn" })</span>
+        <span><button type="submit" class="btn btn-primary custom-btn">@PIM.Web.Resources.Resource.SearchProject</button></span>
+        <span>@Html.ActionLink(@PIM.Web.Resources.Resource.ResetSearch, "Index", "Projects", null, new { @class = "btn btn-primary custom-btn" })</span>
     </div>
 }

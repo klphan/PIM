@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PIM.Core;
+using PIM.Core.Entities;
 
 namespace PIM.Infrastructure.Services
 {
@@ -11,9 +8,8 @@ namespace PIM.Infrastructure.Services
     {
         public IEnumerable<Employee> GetEmployee()
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
-
                 var allEmployees = unitOfWork.Employee.Get().ToList();
                 return allEmployees;
             }

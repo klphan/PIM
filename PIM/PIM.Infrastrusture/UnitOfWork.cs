@@ -1,14 +1,13 @@
-﻿using System;
-using PIM.Core;
+﻿using PIM.Core.Entities;
 using PIM.Core.Interfaces;
 
 namespace PIM.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly PIMContext _context;
+        private readonly PimContext _context;
 
-        public UnitOfWork(PIMContext context)
+        public UnitOfWork(PimContext context)
         {
             _context = context;
             Project = new Repository<Project>(_context);
@@ -27,11 +26,9 @@ namespace PIM.Infrastructure
         {
             return _context.SaveChanges();
         }
-
         public void Dispose()
         {
             _context.Dispose();
         }
-        
     }
 }

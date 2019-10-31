@@ -15,125 +15,109 @@
         @Html.ValidationSummary(true, "Please enter all the mandatory fields(*)")
     }
 
-    if (Model.EditMode == true)
+    if (Model.EditMode)
     {
-        <h4>Edit Project</h4>
+        <h4>@PIM.Web.Resources.Resource.EditProject</h4>
     }
     else
-    { <h4>New Project</h4>}
-    <hr />
-    <div class="form-group row">
-        @Html.LabelFor(p => p.Project.ProjectNumber, new { @class = "col-sm-2 col-form-label" })
-        <div class="col-sm-3">
-            @if (Model.EditMode == true)
-            {
-                @Html.TextBoxFor(p => p.Project.ProjectNumber, new { style = "background-color: #ced4da", @class = "custom-form-control", @readonly = "readonly" })
-            }
-            else
-            {
-                @Html.TextBoxFor(p => p.Project.ProjectNumber, new { style = "width:100%", @class = "custom-form-control" })
+    { <h4>@PIM.Web.Resources.Resource.NewProject</h4>}
+<hr />
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.Number</label>
+    <div class="col-sm-3">
+        @if (Model.EditMode)
+        {
+            @Html.TextBoxFor(p => p.Project.ProjectNumber, new { style = "background-color: #ced4da", @class = "custom-form-control", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.TextBoxFor(p => p.Project.ProjectNumber, new { style = "width:100%", @class = "custom-form-control" })
 
-            }
-        </div>
+        }
     </div>
-    <div class="form-group row">
-        @Html.LabelFor(p => p.Project.Name, new { @class = "col-sm-2 col-form-label" })
-        <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Project.Name, new { @class = "custom-form-control" })
-        </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.ProjectName</label>
+    <div class="col-sm-8">
+        @Html.TextBoxFor(p => p.Project.Name, new { @class = "custom-form-control" })
     </div>
-    <div class="form-group row">
-        @Html.LabelFor(p => p.Project.Customer, new { @class = "col-sm-2 col-form-label" })
-        <div class="col-sm-8">
-            @Html.TextBoxFor(p => p.Project.Customer, new { @class = "custom-form-control" })
-        </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.Customer</label>
+    <div class="col-sm-8">
+        @Html.TextBoxFor(p => p.Project.Customer, new { @class = "custom-form-control" })
     </div>
-    <div class="form-group row">
-        @Html.LabelFor(p => p.Project.GroupId, new { @class = "col-sm-2 col-form-label" })
-        <div class="col-sm-3">
-            @Html.DropDownListFor(p => p.Project.GroupId, new SelectList(Model.Groups, "ID", "GroupLeader.Visa"), "Select Group", new { @class = "custom-form-control" })
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.Group</label>
+
+    <div class="col-sm-3">
+        @*@Html.DropDownListFor(p => p.Project.GroupId, Model.GroupsList, "Select Group", new { @class = "custom-form-control" })*@
+        @Html.DropDownListFor(p => p.Project.GroupId, new SelectList(Model.Groups, "ID", "GroupLeader.Visa"), "Select Group", new { @class = "custom-form-control" })
         </div>
+</div>
+<div class="form-group row">
+
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.Members</label>
+    <div class="col-sm-8">
+        @* ReSharper disable once UnknownCssClass JS library for multiple visa selection*@
+        @Html.ListBoxFor(p => p.Members, Model.EmployeesList, new
+        {
+            @align = "left",
+            @class = "custom-form-control chosen-select",
+            @title = "Select Multiple Options",
+        })
     </div>
-    <div class="form-group row">
-
-        @Html.LabelFor(p => p.Members, new { @class = "col-sm-2 col-form-label" })
-        <div class="col-sm-8">
-            @Html.ListBoxFor(p => p.Members, Model.EmployeesList, new
-            {
-                @align = "left",
-                @class = "custom-form-control chosen-select",
-                @title = "Select Multiple Options",
-            })
-        </div>
+</div>
+<div class="form-group row">
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.Status</label>
+    <div class="col-sm-3">
+        @Html.EnumDropDownListFor(p => p.Project.Status, "Select Status", new { @class = "custom-form-control" })
     </div>
-    <div class="form-group row">
-        @Html.LabelFor(p => p.Project.Status, new { @class = "col-sm-2 col-form-label" })
-        <div class="col-sm-3">
-            @Html.EnumDropDownListFor(p => p.Project.Status, "Select Status", new { @class = "custom-form-control" })
-        </div>
+</div>
+<div class="form-group row" id="date">
+
+
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.StartDate</label>
+
+    <div class="col-sm-3">
+        @Html.EditorFor(p => p.Project.StartDate, new { htmlAttributes = new { @class = "datepicker custom-form-control" } })
     </div>
-    <div class="form-group row" id="date">
 
+    <div class="col-sm-1"><br /></div>
+    <label class="col-sm-2 col-form-label">@PIM.Web.Resources.Resource.EndDate</label>
 
-        @Html.LabelFor(p => p.Project.StartDate, new { @class = "col-sm-2 col-form-label" })
-
-        <div class="col-sm-3">
-            @Html.EditorFor(p => p.Project.StartDate, new { htmlAttributes = new { @class = "datepicker custom-form-control" } })
-        </div>
-
-        <div class="col-sm-1"><br /></div>
-        @Html.LabelFor(p => p.Project.EndDate, new { @class = "col-form-label" })
-
-        <div class="col-sm-3">
-            @Html.EditorFor(p => p.Project.EndDate, new { htmlAttributes = new { @class = "datepicker custom-form-control" } })
-        </div>
+    <div class="col-sm-3">
+        @Html.EditorFor(p => p.Project.EndDate, new { htmlAttributes = new { @class = "datepicker custom-form-control" } })
     </div>
-    <hr />
-    <div>
-        @Html.HiddenFor(p => p.Project.ID)
-        @Html.HiddenFor(p => p.Project.Version)
+</div>
+<hr />
+<div>
+    @Html.HiddenFor(p => p.Project.Id)
+    @Html.HiddenFor(p => p.Project.Version)
 
 
+</div>
+<div id="projects-btn" class="row">
+    <div class="col-sm-5"><br /></div>
+    <div class="col-sm-2">
+        <button id="cancel-btn" type="button" class="btn btn-secondary">@Html.ActionLink("Cancel", "Index", "Projects")</button>
     </div>
-    <div id="projects-btn" class="row">
-        <div class="col-sm-5"><br /></div>
-        <div class="col-sm-2">
-            <button id="cancel-btn" type="button" class="btn btn-secondary">@Html.ActionLink("Cancel", "Index", "Projects")</button>
-        </div>
-        <div class="col-sm-1"><br /></div>
-        <div class="col-sm-2">
-            @if (Model.EditMode == true)
-            {
-                <button type="submit" class="btn btn-primary">Edit Project</button>
+    <div class="col-sm-1"><br /></div>
+    <div class="col-sm-2">
+        @if (Model.EditMode)
+        {
+            <button type="submit" class="btn btn-primary">@PIM.Web.Resources.Resource.EditProject</button>
 
-            }
-            else
-            { <button type="submit" class="btn btn-primary">Create Project</button>}
-        </div>
+        }
+        else
+        { <button type="submit" class="btn btn-primary">@PIM.Web.Resources.Resource.CreateProject</button>}
     </div>
+</div>
 }
 
 @section scripts {
-
-    <script>
-        $(document).ready(function () {
-            $(".datepicker").datepicker({
-                dateFormat: "dd.mm.yy",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-10:+10",
-                showOn: "both",
-                buttonText: "<i class='fa fa-calendar'></i>"
-            });
-        })
-
-
-        $(".chosen-select").chosen();
-
-
-    </script>
-
+    @Scripts.Render("~/Scripts/projects.js")
 }
-
 
 

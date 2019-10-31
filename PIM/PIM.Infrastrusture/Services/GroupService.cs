@@ -1,9 +1,8 @@
 ﻿using PIM.Core;
-using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PIM.Core.Entities;
 
 namespace PIM.Infrastructure.Services
 {
@@ -11,15 +10,9 @@ namespace PIM.Infrastructure.Services
     {
         public IEnumerable<Group> GetGroup()
         {
-            using (var unitOfWork = new UnitOfWork(new PIMContext()))
+            using (var unitOfWork = new UnitOfWork(new PimContext()))
             {
-                
-                var allGroups = unitOfWork.Group.Get().ToList();
-                List<string> groupLeaderNames = new List<string>();
-                foreach (Group group in allGroups)
-                {
-                    groupLeaderNames.Add(group.GroupLeader.FirstName + group.GroupLeader.LastName);
-                };
+                var allGroups = unitOfWork.Group.Get().Include(g => g.GroupLeader).ToList();
                 return allGroups;
             }
         }

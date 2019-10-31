@@ -1,13 +1,8 @@
-﻿using PIM.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using PIM.Core.Entities;
 
-namespace PIM.Core
+namespace PIM.Core.Interfaces
 {
-
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Project> Project { get; }
@@ -16,5 +11,4 @@ namespace PIM.Core
 
         int Commit();
     }
-
 }

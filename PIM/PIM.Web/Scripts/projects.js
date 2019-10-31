@@ -10,7 +10,7 @@ $(document).ready(function() {
         showOn: "both",
         buttonText: "<i class='fa fa-calendar'></i>"
     });
-})
+});
 
 $("button.delete-btn").on("click", function (e) {
     e.preventDefault();
@@ -43,10 +43,8 @@ $(document).ready(function () {
             $('#countChecks').html(numberOfChecked + ' items selected');
 
         }
-    })
+    });
 });
-
-
 
 var ConfirmDeleteMultiple = function () {
     if ($('input:checkbox:checked').length > 0) {
@@ -56,7 +54,7 @@ var ConfirmDeleteMultiple = function () {
     else {
 
     }
-}
+};
 $('#delete-multiple-btn').on("click", ConfirmDeleteMultiple);
 
 var DeleteMultiple = function () {
@@ -64,7 +62,7 @@ var DeleteMultiple = function () {
     var itemsToDelete = new Array();
     $("input[name='projectIdsToDelete']:checked").each(function () {
         itemsToDelete.push($(this).val());
-    })
+    });
     var data = { projectIds: itemsToDelete };
     var urldata = "/Projects/DeleteRange";
     $.ajax({
@@ -80,6 +78,19 @@ var DeleteMultiple = function () {
     });
 
 };
+$(document).ready(function () {
+    $(".datepicker").datepicker({
+        dateFormat: "dd.mm.yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-10:+10",
+        showOn: "both",
+        buttonText: "<i class='fa fa-calendar'></i>"
+    });
+});
+$(document).ready(function() {
+    $(".chosen-select").chosen();
+});
 
 
 

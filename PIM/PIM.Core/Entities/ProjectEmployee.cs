@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 
-namespace PIM.Core
+namespace PIM.Core.Entities
 {
     public class ProjectEmployee : BaseEntity
     {
-        
         public virtual Project Project { get; set; }
 
         public virtual Employee Employee { get; set; }

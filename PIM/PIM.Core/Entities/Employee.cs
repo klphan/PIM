@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace PIM.Core
+namespace PIM.Core.Entities
 {
 
     public class Employee : BaseEntity

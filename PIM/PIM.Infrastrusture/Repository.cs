@@ -1,42 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PIM.Core;
 using PIM.Core.Interfaces;
 using System.Data.Entity;
+using PIM.Core.Entities;
 
 namespace PIM.Infrastructure
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         //protected field for later use in Project and Group 
-        protected readonly DbContext context;
+        protected readonly DbContext Context;
         public Repository(DbContext context)
         {
-            this.context = context;
+            this.Context = context;
         }
-
         public void Add(T entity)
         {
-            context.Set<T>().Add(entity);
+            Context.Set<T>().Add(entity);
         }
 
         public void Remove(Guid id)
         {
             T entity = FindById(id); 
-            context.Set<T>().Remove(entity);
+            Context.Set<T>().Remove(entity);
         }
-
         public IQueryable<T> Get()
         {
-            return context.Set<T>();
+            return Context.Set<T>();
         }
 
         public T FindById(Guid id)
         {
-            return context.Set<T>().Find(id);
+            return Context.Set<T>().Find(id);
         }
     }
 

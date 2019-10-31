@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.ModelConfiguration;
-using PIM.Core;
+﻿using System.Data.Entity.ModelConfiguration;
+using PIM.Core.Entities;
 
 namespace PIM.Infrastructure.EntityConfiguration
 {
@@ -12,9 +7,8 @@ namespace PIM.Infrastructure.EntityConfiguration
     {
         public GroupConfiguration()
         {
-            Property(g => g.ID)
+            Property(g => g.Id)
                 .IsRequired();
-
 
             HasRequired(g => g.GroupLeader)
                 .WithOptional(e => e.IsGroupLeader)
